@@ -69,7 +69,7 @@ class Campus
     {
         if (!$this->participants->contains($participant)) {
             $this->participants[] = $participant;
-            $participant->setRelPartCampus($this);
+            $participant->setCampus($this);
         }
 
         return $this;
@@ -79,8 +79,8 @@ class Campus
     {
         if ($this->participants->removeElement($participant)) {
             // set the owning side to null (unless already changed)
-            if ($participant->getRelPartCampus() === $this) {
-                $participant->setRelPartCampus(null);
+            if ($participant->getCampus() === $this) {
+                $participant->setCampus(null);
             }
         }
 
