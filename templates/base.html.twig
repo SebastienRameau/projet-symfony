@@ -2,18 +2,19 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome Team The B.E.S.(T)!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+        {% block title %}Welcome Team The B.E.S.(T)!{% endblock %}
+        
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+                                
+        <a {% if r == 'front' %}active{% endif %}" href="{{ path('accueil')}}">Home</a>
+        {% if is_granted('ROLE_USER') %}
+        <a {% if r == 'app_logout' %}active{% endif %}" href="{{ path('app_logout')}}"> Déconnexion </a>
+        {% else %}
+        <a {% if r == 'app_login' %}active{% endif %}" href="{{ path('app_login')}}">  Login </a>
+        {% endif %}
+           <p> blabla</p>
+        {% endblock %}
     </body>
 </html>

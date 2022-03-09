@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+{# créer une variable dans twig #}
+    {%
+    set r = app.request.get('_route')
+    %}
+
+    {% if is_granted('ROLE_USER') %}
+        <h1>Bonjour {{ app.user.username }}</h1>
+        <a {% if r == 'app_logout' %}active{% endif %}" href="{{ path('app_logout')}}"> Déconnexion </a>
+    {% else %}
+        <a {% if r == 'app_login' %}active{% endif %}" href="{{ path('app_login')}}">  Login </a>
+    {% endif %}
+{% endblock %}
