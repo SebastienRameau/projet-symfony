@@ -84,13 +84,13 @@ class SortieController extends AbstractController
         if ($form->isSubmitted()){
 
 
-            if(date now > date sortie){
-                $emi->flush();
-                return $this->redirectToRoute('acceuil');
+            // if(date now > date sortie){
+            //     $emi->flush();
+            //     return $this->redirectToRoute('acceuil');
 
-            }
+            // }
 
-            
+
            
         }
 
