@@ -28,7 +28,7 @@
 
     <!-- Recherche par date de la sortie -->
     <label for="date_recherche_debut">Entre : </label>
-    <input type="date" id="date_recherche_debut" name="date_recherche_debut">
+    <input type="datetime-local" id="date_recherche_debut" name="date_recherche_debut">
 
     <label for="date_recherche_fin"> et : </label>
     <input type="date" id="date_recherche_fin" name="date_recherche_debut">
@@ -75,7 +75,7 @@
         {% for s in sorties_liste %}
         <tr>
             <td>{{s.nom}}</td>
-            <td>{{s.dateHeureDebut|date('Y-m-d h:m')}}</td>
+            <td>{{s.dateHeureDebut|date('Y-m-d h:i')}}</td>
             <td>{{s.dateLimiteInscription|date('Y-m-d')}}</td>
             {% set size = s.participants|length %}
             <td>{{size}}/{{s.nbInscriptionMax}}</td>
@@ -85,7 +85,12 @@
                 {% else %}
                 <td></td>
             {% endif %}
-            <td>{{s.organisateur.prenom}} {{s.organisateur.nom}}</td> <!-- TODO : Ajouter un lien vers profil participant -->
+            <td>
+            <a href={{path('profil',{'id' : s.organisateur.id })}} class="">
+            {{s.organisateur.prenom}} {{s.organisateur.nom}}
+            </a>
+
+            </td> <!-- TODO : Ajouter un lien vers profil participant -->
             <td>
                 <!-- Si organisateur = connecte -->
                 {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} {% endblock %}
+
+{% block main %}
+
+<div class="col-12 text-center">
+
+    <h2 class="text-center">{{ list_participant.pseudo }}</h2>
+
+        <label>Prenom :</label><h4 class="text-center">{{list_participant . prenom}}</h4>
+
+        <label>Nom :</label><h4 class="text-center">{{ list_participant.nom }} </h4>
+
+        <label>Telephone :</label><h4 class="text-center">{{ list_participant.telephone   }} </h4>
+
+        <label>Email :</label><h4 class="text-center">{{ list_participant . mail}}</h4>
+
+        <label>Campus :</label><h4 class="text-center">{{ list_participant.campus.nom }} </h4>
+
+        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+</div>
+
+
+
+{% endblock %}
