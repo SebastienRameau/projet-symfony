@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SortieController extends AbstractController
 {
     /**
-     * @Route("/", name="sorties")
+     * @Route("/accueil", name="accueil")
      */
     public function sorties(CampusRepository $repoCampus, SortieRepository $repoSortie, EtatRepository $repoEtat,
          ParticipantRepository $repoParticipant): Response
@@ -69,7 +69,7 @@ class SortieController extends AbstractController
         //Non : rediriger vers la méthode de création au click sur le bouton
 
 
-        return $this->render('sortie/index.html.twig', [
+        return $this->render('sortie/accueil.html.twig', [
             'date_jour' => $dateJour,
             'participant_connecte' => $participantConnecte,
             'campus_liste' => $campusListe,
