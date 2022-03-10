@@ -184,6 +184,7 @@ class AppFixtures extends Fixture
             $sortie->setNom($faker->text(50));
 
             $dateDebut = $faker->dateTimeThisYear('now', 'Europe/Paris');
+            $dateDebut->modify('+6 months');
             $sortie->setDateHeureDebut($dateDebut);
 
             $duree = $faker->numberBetween(30, 300);
@@ -210,13 +211,13 @@ class AppFixtures extends Fixture
             $dateNow = date_create(date('d-m-Y H:i:s'));
             $interval = date_diff($dateDebut, $dateNow);
             
-            if ($nbInscrits = $nbInscriptionMax or $dateLimiteInscription < $dateNow) {
+            if ($nbInscrits == $nbInscriptionMax || $dateLimiteInscription < $dateNow) {
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Cloturée']));
-            }elseif ($dateDebut < $dateNow and $interval->format('%a') > 30) {
+            }elseif ($dateDebut < $dateNow && $interval->format('%a') > 30) {
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Historisée']));
-            }elseif ($dateDebut < $dateNow and $interval->format('%i') >= $duree) {
+            }elseif ($dateDebut < $dateNow && $interval->format('%i') >= $duree) {
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Passée']));
-            }elseif ($dateDebut < $dateNow and $interval->format('%i') < $duree) {
+            }elseif ($dateDebut < $dateNow && $interval->format('%i') < $duree) {
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Activité en cours']));
             }else{
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']));
