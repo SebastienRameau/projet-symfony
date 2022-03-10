@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SortieController!{% endblock %}
+
+{% block main %}
+
+<div>
+<!-- Affichage de la date du jour -->
+<strong>{{date_jour}}</strong>
+<br>
+<!-- Affichage du participant connecté -->
+<strong>{{participant_connecte.prenom}} {{participant_connecte.nom}}</strong> <!-- temporaire -->
+</div>
+
+<div>
+<!-- Formulaire de filtrage -->
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+        <button class="btn btn-primary">
+        Rechercher
+        </button>
+    {{ form_end(form) }}
+
+</div>
+
+
+<!-- Tableau de sortie -->
+    <!-- TODO : rajouter une barre de scroll avec Bootstrap -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de la sortie</th>
+            <th>Clôture</th>
+            <th>Inscrits/places</th>
+            <th>Etat</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in sorties_liste %}
+        <tr>
+            <td>{{s.nom}}</td>
+            <td>{{s.dateHeureDebut|date('Y-m-d h:m')}}</td>
+            <td>{{s.dateLimiteInscription|date('Y-m-d')}}</td>
+            {% set size = s.participants|length %}
+            <td>{{size}}/{{s.nbInscriptionMax}}</td>
+            <td>{{s.etat.libelle}}</td>
+            {% if participant_connecte in s.participants %}
+                <td>X</td>
+                {% else %}
+                <td></td>
+            {% endif %}
+            <td>{{s.organisateur.prenom}} {{s.organisateur.nom}}</td> <!-- TODO : Ajouter un lien vers profil participant -->
+            <td>
+                <!-- Si organisateur = connecte -->
+                {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->
+                    <!-- Si etat = cree alors lien Modifier et lien = Publier -->
+                    {% if s.etat.libelle == "Créée" %}
+                        <a href="{{ path('accueil',{id:s.id})}}">Modifier</a>
+                        <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
+                    <!-- Sinon lien Afficher -->
+                    {% else %}
+                        <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                        <!-- et Si dateDebut < now lien Annuler -->
+                        {% if s.dateHeureDebut > date_jour %}
+                            <a href="{{ path('accueil',{id:s.id})}}">Annuler</a>
+                        {% endif %}
+                    {% endif %}
+                <!-- Sinon -->
+                {% else %}
+                    <!-- lien Afficher -->
+                    <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                    <!-- Si (etat = Ouverte ou etat = Cloturee) et inscrit = true et dateDebut < now alors lien Se désister-->
+                    {% if (s.etat.libelle == "Ouverte" or s.etat.libelle == "Cloturée") and
+                     (participant_connecte in s.participants) and 
+                     (s.dateHeureDebut > date_jour) %}
+                        <a href="{{ path('accueil',{id:s.id})}}">Se désister</a>
+                    <!-- Sinon, Si etat = Ouverte alors lien S'inscrire (sinon rien)-->
+                    {% elseif s.etat.libelle == "Ouverte" %}
+                        <a href="{{ path('accueil',{id:s.id})}}">S'inscrire</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- Bouton création de sortie TODO : changer le lien, rediriger vers la création -->
+<input type="submit" name="creer_sortie" id="creer_sortie" href="{{ path('accueil')}}" value="Créer une sortie">
+
+{% endblock %}
