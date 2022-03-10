@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Classes\FiltreSorties as ClassesFiltreSorties;
 use App\Entity\Etat;
 use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
@@ -10,8 +11,8 @@ use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
-use FiltreSorties;
 use Doctrine\ORM\EntityManagerInterface;
+use FiltreSorties;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/accueil", name="accueil")
      */
-    public function sorties(CampusRepository $repoCampus, SortieRepository $repoSortie, EtatRepository $repoEtat,
+    public function sorties(Request $request, CampusRepository $repoCampus, SortieRepository $repoSortie, EtatRepository $repoEtat,
          ParticipantRepository $repoParticipant): Response
     {
         //Envoyer la date du jour
@@ -32,32 +33,20 @@ class SortieController extends AbstractController
 
         
         //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '1']); //temporaire
+        $participantConnecte = $repoParticipant->findOneBy(['id' => '1021']); //temporaire
 
 
         //Envoyer la liste des campus
         $campusListe = $repoCampus->findAll();
 
-        //Envoyer la liste des sorties Sauf historisées Ou non publiées (créées) (sauf si le participant est l'organisateur)
-        // $requete = $repoSortie->createQueryBuilder('p')
-        //     ->select('p')
-        //     ->where('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Ouverte'])->getId())
-        //     ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Cloturée'])->getId())
-        //     ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Activité en cours'])->getId())
-        //     ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Passée'])->getId())
-        //     ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Annulée'])->getId())
-        //     ->orWhere('p.organisateur = '.$participantConnecte->getId())
-        //     ->orderBy('p.dateHeureDebut', 'ASC')
-        //     ->getQuery();
-
-        // $sortiesListe = $requete->getResult();
 
         //Créer et envoyer le formulaire de recherche de sorties
         $sortiesListe = [];
-        $filtreSorties = new FiltreSorties();
+        $filtreSorties = new ClassesFiltreSorties();
         $form = $this->createForm(FiltreSortiesType::class, $filtreSorties);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $sortiesListe = $repoSortie->findByFilters($filtreSorties);
+            $sortiesListe = $repoSortie->findByFilters($filtreSorties, $repoEtat, $repoCampus, $participantConnecte);
             return $this->redirectToRoute('accueil');
         }
 
@@ -94,15 +83,15 @@ class SortieController extends AbstractController
         if ($form->isSubmitted()){
 
             $time = date('H:i:s \O\n d/m/Y');
-            $timeDebut->getDategio
+            // $timeDebut->getDategio
             
-            if($time > $dateHeureDebut){
+            // if($time > $dateHeureDebut){
 
 
-                $emi->flush();
-                return $this->redirectToRoute('acceuil');
+            //     $emi->flush();
+            //     return $this->redirectToRoute('acceuil');
 
-            }
+            // }
 
 
            
