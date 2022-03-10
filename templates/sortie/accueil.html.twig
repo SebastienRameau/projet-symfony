@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SortieController!{% endblock %}
+
+{% block main %}
+
+<div>
+<!-- Affichage de la date du jour -->
+<strong>{{date_jour}}</strong>
+<br>
+<!-- Affichage du participant connecté -->
+<strong>{{participant_connecte.prenom}} {{participant_connecte.nom}}</strong> <!-- temporaire -->
+</div>
+
+<div>
+<!-- Formulaire de filtrage -->
+<form action="SortieController.php" method="post" >
+    <!-- Choix du campus -->
+    <select name="campus_select" id="campus_select">
+        <option value="campus_tous">Choisissez un campus</option>
+        {% for campus in campus_liste %}
+        <option value={{campus.nom}}>{{campus.nom}}</option>
+        {% endfor %}
+    </select>
+    <!-- Recherche par nom -->
+    <label for="nom_recherche">Le nom de la sortie contient : </label>
+    <input type="text" name="nom_recherche" id="nom_recherche">
+
+    <!-- Recherche par date de la sortie -->
+    <label for="date_recherche_debut">Entre : </label>
+    <input type="datetime-local" id="date_recherche_debut" name="date_recherche_debut">
+
+    <label for="date_recherche_fin"> et : </label>
+    <input type="date" id="date_recherche_fin" name="date_recherche_debut">
+
+    <!-- Checkbox types de sortie -->
+        <!-- TODO : Cocher par défaut tout sauf sorties passées ? -->
+    <div>
+        <input type="Checkbox" name="checkbox_organisateur" id="checkbox_organisateur">
+            <label for="checkbox_organisateur">Sorties dont le suis l'organisateur/trice</label>
+            <br>
+        <input type="Checkbox" name="checkbox_inscrit" id="checkbox_inscrit">
+            <label for="checkbox_inscrit">Sorties auxquelles je suis inscrit/e</label>
+            <br>
+        <input type="Checkbox" name="checkbox_non_inscrit" id="checkbox_non_inscrit">
+            <label for="checkbox_non_inscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
+            <br>
+        <input type="Checkbox" name="checkbox_passees" id="checkbox_passees">
+            <label for="checkbox_passees">Sorties passées</label>
+    </div>
+
+    <!-- Bouton rechercher -->
+    <input type="submit" name="recherche_valider" id="recherche_valider" value="Rechercher">
+
+</form>
+</div>
+
+
+<!-- Tableau de sortie -->
+    <!-- TODO : rajouter une barre de scroll avec Bootstrap -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de la sortie</th>
+            <th>Clôture</th>
+            <th>Inscrits/places</th>
+            <th>Etat</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in sorties_liste %}
+        <tr>
+            <td>{{s.nom}}</td>
+            <td>{{s.dateHeureDebut|date('Y-m-d h:i')}}</td>
+            <td>{{s.dateLimiteInscription|date('Y-m-d')}}</td>
+            {% set size = s.participants|length %}
+            <td>{{size}}/{{s.nbInscriptionMax}}</td>
+            <td>{{s.etat.libelle}}</td>
+            {% if participant_connecte in s.participants %}
+                <td>X</td>
+                {% else %}
+                <td></td>
+            {% endif %}
+            <td>
+            <a href={{path('profil',{'id' : s.organisateur.id })}} class="">
+            {{s.organisateur.prenom}} {{s.organisateur.nom}}
+            </a>
+
+            </td> <!-- TODO : Ajouter un lien vers profil participant -->
+            <td>
+                <!-- Si organisateur = connecte -->
+                {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->
+                    <!-- Si etat = cree alors lien Modifier et lien = Publier -->
+                    {% if s.etat.libelle == "Créée" %}
+                        <a href="{{ path('accueil',{id:s.id})}}">Modifier</a>
+                        <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
+                    <!-- Sinon lien Afficher -->
+                    {% else %}
+                        <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                        <!-- et Si dateDebut < now lien Annuler -->
+                        {% if s.dateHeureDebut > date_jour %}
+                            <a href="{{ path('accueil',{id:s.id})}}">Annuler</a>
+                        {% endif %}
+                    {% endif %}
+                <!-- Sinon -->
+                {% else %}
+                    <!-- lien Afficher -->
+                    <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                    <!-- Si (etat = Ouverte ou etat = Cloturee) et inscrit = true et dateDebut < now alors lien Se désister-->
+                    {% if (s.etat.libelle == "Ouverte" or s.etat.libelle == "Cloturée") and
+                     (participant_connecte in s.participants) and 
+                     (s.dateHeureDebut > date_jour) %}
+                        <a href="{{ path('accueil',{id:s.id})}}">Se désister</a>
+                    <!-- Sinon, Si etat = Ouverte alors lien S'inscrire (sinon rien)-->
+                    {% elseif s.etat.libelle == "Ouverte" %}
+                        <a href="{{ path('accueil',{id:s.id})}}">S'inscrire</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- Bouton création de sortie TODO : changer le lien, rediriger vers la création -->
+<input type="submit" name="creer_sortie" id="creer_sortie" href="{{ path('accueil')}}" value="Créer une sortie">
+
+{% endblock %}
