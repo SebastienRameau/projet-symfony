@@ -30,7 +30,7 @@ class SortieController extends AbstractController
 
         
         //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '1']); //temporaire
+        $participantConnecte = $repoParticipant->findOneBy(['id' => '31']); //temporaire
 
 
         //Envoyer la liste des campus
@@ -92,7 +92,7 @@ class SortieController extends AbstractController
                 $sortie->setEtat($etat);
 
                 $emi->flush();
-                return $this->redirectToRoute('acceuil');
+                return $this->redirectToRoute('accueil');
 
             }
             
