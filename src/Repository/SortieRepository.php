@@ -45,6 +45,12 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function findByFilters()
+    {
+        
+    }
+
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */
