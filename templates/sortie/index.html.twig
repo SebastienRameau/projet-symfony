@@ -2,7 +2,7 @@
 
 {% block title %}Hello SortieController!{% endblock %}
 
-{% block main %}
+{% block body %}
 
 <div>
 <!-- Affichage de la date du jour -->
@@ -96,28 +96,28 @@
                 {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->
                     <!-- Si etat = cree alors lien Modifier et lien = Publier -->
                     {% if s.etat.libelle == "Créée" %}
-                        <a href="{{ path('accueil',{id:s.id})}}">Modifier</a>
-                        <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
+                        <a href="{{ path('sorties',{id:s.id})}}">Modifier</a>
+                        <a href="{{ path('sorties',{id:s.id})}}">Publier</a>
                     <!-- Sinon lien Afficher -->
                     {% else %}
-                        <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                        <a href="{{ path('sorties',{id:s.id})}}">Afficher</a>
                         <!-- et Si dateDebut < now lien Annuler -->
                         {% if s.dateHeureDebut > date_jour %}
-                            <a href="{{ path('accueil',{id:s.id})}}">Annuler</a>
+                            <a href="{{ path('sorties',{id:s.id})}}">Annuler</a>
                         {% endif %}
                     {% endif %}
                 <!-- Sinon -->
                 {% else %}
                     <!-- lien Afficher -->
-                    <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                    <a href="{{ path('sorties',{id:s.id})}}">Afficher</a>
                     <!-- Si (etat = Ouverte ou etat = Cloturee) et inscrit = true et dateDebut < now alors lien Se désister-->
                     {% if (s.etat.libelle == "Ouverte" or s.etat.libelle == "Cloturée") and
                      (participant_connecte in s.participants) and 
                      (s.dateHeureDebut > date_jour) %}
-                        <a href="{{ path('accueil',{id:s.id})}}">Se désister</a>
+                        <a href="{{ path('sorties',{id:s.id})}}">Se désister</a>
                     <!-- Sinon, Si etat = Ouverte alors lien S'inscrire (sinon rien)-->
                     {% elseif s.etat.libelle == "Ouverte" %}
-                        <a href="{{ path('accueil',{id:s.id})}}">S'inscrire</a>
+                        <a href="{{ path('sorties',{id:s.id})}}">S'inscrire</a>
                     {% endif %}
                 {% endif %}
             </td>
@@ -128,6 +128,6 @@
 
 
 <!-- Bouton création de sortie TODO : changer le lien, rediriger vers la création -->
-<input type="submit" name="creer_sortie" id="creer_sortie" href="{{ path('accueil')}}" value="Créer une sortie">
+<input type="submit" name="creer_sortie" id="creer_sortie" href="{{ path('sorties')}}" value="Créer une sortie">
 
 {% endblock %}
