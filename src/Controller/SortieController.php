@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Classes\FiltreSorties as ClassesFiltreSorties;
 use App\Entity\Etat;
+use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
 use App\Form\AnnulerFormType;
 use App\Repository\CampusRepository;
@@ -10,6 +12,7 @@ use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use FiltreSorties;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +23,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/accueil", name="accueil")
      */
-    public function accueil(CampusRepository $repoCampus, SortieRepository $repoSortie, EtatRepository $repoEtat,
+    public function sorties(Request $request, CampusRepository $repoCampus, SortieRepository $repoSortie, EtatRepository $repoEtat,
          ParticipantRepository $repoParticipant): Response
     {
         //Envoyer la date du jour
@@ -30,27 +33,22 @@ class SortieController extends AbstractController
 
         
         //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '31']); //temporaire
+        $participantConnecte = $repoParticipant->findOneBy(['id' => '1021']); //temporaire
 
 
         //Envoyer la liste des campus
         $campusListe = $repoCampus->findAll();
 
 
-        //Envoyer la liste des sorties Sauf historisées Ou non publiées (créées) (sauf si le participant est l'organisateur)
-        $requete = $repoSortie->createQueryBuilder('p')
-            ->select('p')
-            ->where('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Ouverte'])->getId())
-            ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Cloturée'])->getId())
-            ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Activité en cours'])->getId())
-            ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Passée'])->getId())
-            ->orWhere('p.etat = '.$repoEtat->findOneBy(['libelle' => 'Annulée'])->getId())
-            ->orWhere('p.organisateur = '.$participantConnecte->getId())
-            ->orderBy('p.dateHeureDebut', 'ASC')
-            ->getQuery();
-
-        $sortiesListe = $requete->getResult();
-
+        //Créer et envoyer le formulaire de recherche de sorties
+        $sortiesListe = [];
+        $filtreSorties = new ClassesFiltreSorties();
+        $form = $this->createForm(FiltreSortiesType::class, $filtreSorties);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sortiesListe = $repoSortie->findByFilters($filtreSorties, $repoEtat, $repoCampus, $participantConnecte);
+            return $this->redirectToRoute('accueil');
+        }
 
         //Gérer le bouton Rechercher
         //Ou tout faire en Javascript ?
@@ -65,6 +63,7 @@ class SortieController extends AbstractController
             'participant_connecte' => $participantConnecte,
             'campus_liste' => $campusListe,
             'sorties_liste' => $sortiesListe,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -74,7 +73,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/annuler/{id}", name="annuler_sortir")
      */
-    public function annuler_sortir(Sortie $sortie,EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
+    public function annuler_sortir(Sortie $sortie, Request $rq, EntityManagerInterface $emi): Response
     {
 
         $form = $this->createForm(AnnulerFormType::class, $sortie);
@@ -84,29 +83,107 @@ class SortieController extends AbstractController
         if ($form->isSubmitted()){
 
             $time = date('H:i:s \O\n d/m/Y');
-            $dateDebut = $sortie->getDateHeureDebut();
+            // $timeDebut->getDategio
             
-            if($time > $dateDebut){
+            // if($time > $dateHeureDebut){
 
-                $etat=$etatRepo->findOneBy(['libelle'=> 'Annulée']);
-                $sortie->setEtat($etat);
 
-                $emi->flush();
-                return $this->redirectToRoute('accueil');
+            //     $emi->flush();
+            //     return $this->redirectToRoute('acceuil');
 
-            }
-            
-            $this->addFlash(
-                'notice',
-                ' Vous ne pouvez pas annuler cette sortie parce que celle-ci a deja commencée'
+            // }
 
-            );
 
+           
         }
 
+
+
+
         return $this->render('sortie/annuler.html.twig', [
-            'formular'=> $form->createView()
+
+            'sorties_liste' => $sortie,
+
         ]);
     }
 
+
+    /**
+     * @Route("/edit/{id}", name="edit")
+     */
+    public function edit(Wish $wish, Request $rq, EntityManagerInterface $emi): Response
+    {
+        $form= $this->createForm(WishFormType::class,$wish);
+
+        $form->handleRequest($rq);
+
+        if($form -> isSubmitted()){
+
+            $this->addFlash(
+                'notice1',
+                'Your article is edited'
+
+            );
+
+
+            $emi->flush();
+            return $this->redirectToRoute('wish');
+
+           
+
+        }
+
+        return $this->render('wish/edit.html.twig', [
+            'formular'=> $form->createView()
+        ]);
+
+    }
+
+    // /**
+    //  * @Route("/favourite/", name="favourite")
+    //  */
+    // public function favourite(Request $rq, EntityManagerInterface $emi): Response
+    // {
+    //     $wish= new Wish();
+    //     $form = $this->createForm(WishFormType::class, $wish);
+
+        
+
+    //     $form->handleRequest($rq);
+
+    //     if ( $form -> isSubmitted() && $form->isValid())
+    //     {
+            
+    //         $age = $form->get('age')->getData();
+    //         if($age < 18)
+    //         {
+    //             $this->addFlash(
+    //                 'notice',
+    //                 'You are too young to join this club! You can not add anything to our list'
+
+    //             );
+
+    //         }else{
+
+    //             $this->addFlash(
+    //                 'notice',
+    //                 'Your Article was added'
+
+    //             );
+
+
+
+    //         $emi->persist($wish);
+    //         $emi->flush();
+    //         return $this->redirectToRoute('wish');
+    //         }
+
+    //     }
+
+    //     return $this->render('wish/favourite.html.twig', [
+    //         'formular'=> $form->createView(),
+    //     ]);
+
+
+    // }
 }

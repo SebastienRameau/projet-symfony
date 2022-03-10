@@ -1,6 +1,6 @@
 <?php
 
-use App\Entity\Campus;
+namespace App\Classes;
 
 class FiltreSorties{
 
@@ -50,7 +50,7 @@ class FiltreSorties{
         return $this->dateMin;
     }
 
-    public function setDateMin(\DateTimeInterface $dateMin): self
+    public function setDateMin(?\DateTimeInterface $dateMin): self
     {
         $this->dateMin = $dateMin;
 
@@ -62,7 +62,7 @@ class FiltreSorties{
         return $this->dateMax;
     }
 
-    public function setDateMax(\DateTimeInterface $dateMax): self
+    public function setDateMax(?\DateTimeInterface $dateMax): self
     {
         $this->dateMax = $dateMax;
 

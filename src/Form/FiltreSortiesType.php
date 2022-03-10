@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
+use App\Classes\FiltreSorties as ClassesFiltreSorties;
 use FiltreSorties;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,11 +23,13 @@ class FiltreSortiesType extends AbstractType
             ->add('nom')
             ->add('dateMin', DateTimeType::class,[
                 'label' => 'Entre ',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'required' => false,
                 ])
             ->add('dateMax', DateTimeType::class,[
                 'label' => ' et ',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'required' => false,
             ])
             ->add('isOrganisateur', CheckboxType::class, array(
                 'label'    => 'Sorties dont je suis l\'organisateur/trice',
@@ -51,7 +53,7 @@ class FiltreSortiesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => FiltreSorties::class,
+            'data_class' => ClassesFiltreSorties::class,
         ]);
     }
 }
