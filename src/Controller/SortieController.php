@@ -83,12 +83,16 @@ class SortieController extends AbstractController
 
         if ($form->isSubmitted()){
 
+            $time = date('H:i:s \O\n d/m/Y');
+            $timeDebut->getDategio
+            
+            if($time > $dateHeureDebut){
 
-            // if(date now > date sortie){
-            //     $emi->flush();
-            //     return $this->redirectToRoute('acceuil');
 
-            // }
+                $emi->flush();
+                return $this->redirectToRoute('acceuil');
+
+            }
 
 
            
