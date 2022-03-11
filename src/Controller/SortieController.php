@@ -99,7 +99,7 @@ class SortieController extends AbstractController
                 $sortie->setEtat($etat);
 
                 $emi->flush();
-                return $this->redirectToRoute('acceuil');
+                return $this->redirectToRoute('accueil');
 
             }
             
