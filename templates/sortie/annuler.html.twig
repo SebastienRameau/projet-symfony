@@ -8,19 +8,25 @@
 
     <h2 class="text-center">Annuler une sortie</h2>
 
-        <label>Nom de la sortie : </label><h4 class="text-center">{{list_participant . prenom}}</h4>
+        <label>Nom de la sortie : </label><h4 class="text-center">{{list_sortie . nom}}</h4>
 
-        <label>Date de la sortie : </label><h4 class="text-center">{{ list_participant.nom }} </h4>
+        <label>Date de la sortie : </label><h4 class="text-center">{{ list_sortie. dateHeureDebut | date('d/m/Y') }} </h4>
 
-        <label>Campus : </label><h4 class="text-center">{{ list_participant.telephone   }} </h4>
+        <label>Campus : </label><h4 class="text-center">{{ list_sortie.campus.nom  }} </h4>
 
-        <label>Lieu :</label><h4 class="text-center">{{ list_participant . mail}}</h4>
+        <label>Lieu :</label><h4 class="text-center">{{ list_sortie.lieu.rue }}  {{ list_sortie.lieu.ville.nom }} {{ list_sortie.lieu.ville .codePostal }}</h4>
 
-        <label>Motif :</label><textarea style="width= 50px ; height=30px" placeholder:"Ecrirer votre motif de anuller"></textarea >
+        {{ form_start(formular)}}
+
+        {{ form_widget(formular)}}
+    
+        {{ form_end(formular)}}
+        
 
         <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
 
         <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+
 </div>
 
 
