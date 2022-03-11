@@ -2,11 +2,14 @@
 
 namespace App\Repository;
 
+use App\Classes\FiltreSorties as ClassesFiltreSorties;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use FiltreSorties;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -44,6 +47,51 @@ class SortieRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+
+    public function findByFilters(ClassesFiltreSorties $filtreSorties, EtatRepository $repoEtat, CampusRepository $repoCampus,
+     Participant $participantConnecte)
+    {
+
+        $qb = $this->createQueryBuilder("s");
+
+        $qb->select('s');
+
+        if ($filtreSorties) {
+            
+            $campusNom = $filtreSorties->getCampusNom();
+            $nom = $filtreSorties->getNom();
+            $dateMin = $filtreSorties->getDateMin();
+            $dateMax = $filtreSorties->getDateMax();
+            $isOrganisateur = $filtreSorties->getIsOrganisateur();
+            $isInscrit = $filtreSorties->getIsInscrit();
+            $isNonInscrit = $filtreSorties->getIsNonInscrit();
+            $isPassee = $filtreSorties->getIsPassee();
+
+            if ($campusNom) {
+                $qb->andWhere('s.campus = '.$repoCampus->findOneBy(['nom' => $campusNom])->getId());
+            }
+            if ($nom) {
+                $qb->andWhere('s.nom like '.$nom);
+            }
+
+
+
+        }else{
+            $qb->where('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Ouverte'])->getId())
+            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Cloturée'])->getId())
+            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Activité en cours'])->getId())
+            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Passée'])->getId())
+            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Annulée'])->getId())
+            ->orWhere('s.organisateur = '.$participantConnecte->getId());
+        }
+        $qb->orderBy('s.dateHeureDebut', 'ASC');
+
+        return $qb->getQuery()->getResult();
+
+    }
+
+
 
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
