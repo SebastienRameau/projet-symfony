@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Classes\FiltreSorties as ClassesFiltreSorties;
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Form\AnnulerFormType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
@@ -17,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+
 
 class SortieController extends AbstractController
 {
@@ -33,7 +37,9 @@ class SortieController extends AbstractController
 
         
         //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '1021']); //temporaire
+
+        $participantConnecte = $repoParticipant->findOneBy(['id' => '43']); //temporaire
+
 
 
         //Envoyer la liste des campus
@@ -71,121 +77,47 @@ class SortieController extends AbstractController
 
 
 
-
     /**
      * @Route("/annuler/{id}", name="annuler_sortir")
      */
-    public function annuler_sortir(Sortie $sortie, Request $rq, EntityManagerInterface $emi): Response
+    public function annuler_sortir(Sortie $sortie,EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
     {
 
         $form = $this->createForm(AnnulerFormType::class, $sortie);
 
         $form->handleRequest($rq);
 
+
         if ($form->isSubmitted()){
 
-            $time = date('H:i:s \O\n d/m/Y');
-            // $timeDebut->getDategio
+            // $time = date('H:i:s \O\n d/m/Y');
+            // $dateDebut = $sortie->getDateHeureDebut();
             
-            // if($time > $dateHeureDebut){
+            // if($time > $dateDebut){
 
 
-            //     $emi->flush();
-            //     return $this->redirectToRoute('acceuil');
+                $etat=$etatRepo->findOneBy(['libelle'=> 'Annulée']);
 
-            // }
+                $sortie->setEtat($etat);
 
+                $emi->flush();
+                return $this->redirectToRoute('accueil');
 
-           
-        }
+            }
+            
+            // // $this->addFlash(
+            // //     'notice',
+            // //     ' Vous ne pouvez pas annuler cette sortie parce que celle-ci a deja commencée'
 
+            // );
 
-
-
+    
         return $this->render('sortie/annuler.html.twig', [
 
-            'sorties_liste' => $sortie,
-
-        ]);
-    }
-
-
-    /**
-     * @Route("/edit/{id}", name="edit")
-     */
-    public function edit(Wish $wish, Request $rq, EntityManagerInterface $emi): Response
-    {
-        $form= $this->createForm(WishFormType::class,$wish);
-
-        $form->handleRequest($rq);
-
-        if($form -> isSubmitted()){
-
-            $this->addFlash(
-                'notice1',
-                'Your article is edited'
-
-            );
-
-
-            $emi->flush();
-            return $this->redirectToRoute('wish');
-
-           
-
-        }
-
-        return $this->render('wish/edit.html.twig', [
-            'formular'=> $form->createView()
-        ]);
-
-    }
-
-    // /**
-    //  * @Route("/favourite/", name="favourite")
-    //  */
-    // public function favourite(Request $rq, EntityManagerInterface $emi): Response
-    // {
-    //     $wish= new Wish();
-    //     $form = $this->createForm(WishFormType::class, $wish);
-
-        
-
-    //     $form->handleRequest($rq);
-
-    //     if ( $form -> isSubmitted() && $form->isValid())
-    //     {
+            'formular'=> $form->createView(),
+            'list_sortie'=> $sortie
             
-    //         $age = $form->get('age')->getData();
-    //         if($age < 18)
-    //         {
-    //             $this->addFlash(
-    //                 'notice',
-    //                 'You are too young to join this club! You can not add anything to our list'
+        ]);
+    }
 
-    //             );
-
-    //         }else{
-
-    //             $this->addFlash(
-    //                 'notice',
-    //                 'Your Article was added'
-
-    //             );
-
-
-
-    //         $emi->persist($wish);
-    //         $emi->flush();
-    //         return $this->redirectToRoute('wish');
-    //         }
-
-    //     }
-
-    //     return $this->render('wish/favourite.html.twig', [
-    //         'formular'=> $form->createView(),
-    //     ]);
-
-
-    // }
 }
