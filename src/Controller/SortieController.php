@@ -9,6 +9,7 @@ use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Form\AnnulerFormType;
+use App\Form\ModifierSortieType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
@@ -117,5 +118,42 @@ class SortieController extends AbstractController
             
         ]);
     }
+
+    /**
+     * @Route("/modifier/{id}", name="modifier_sortir")
+     */
+    public function modifier_sortir(Sortie $sortie,EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
+    {
+
+        $form = $this->createForm(ModifierSortieType::class,$sortie);
+
+        $form->handleRequest($rq);
+
+
+        if ($form->isSubmitted()){
+
+              
+                $emi->flush();
+                return $this->redirectToRoute('acceuil');
+
+            }
+            
+            $this->addFlash(
+                'notice',
+                ' Vous avez deja modifie une sortie'
+
+            );
+
+    
+        return $this->render('sortie/modifiersortie.html.twig', [
+
+            'formular'=> $form->createView(),
+            'list_sortie'=> $sortie
+            
+        ]);
+    }
+
+
+
 
 }
