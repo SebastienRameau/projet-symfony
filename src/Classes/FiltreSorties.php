@@ -2,9 +2,11 @@
 
 namespace App\Classes;
 
+use App\Entity\Campus;
+
 class FiltreSorties{
 
-    private $campusNom;
+    private $campus;
 
     private $nom;
 
@@ -21,14 +23,14 @@ class FiltreSorties{
     private $isPassee;
 
 
-    public function getCampusNom(): ?string
+    public function getCampus(): ?Campus
     {
-        return $this->campusNom;
+        return $this->campus;
     }
 
-    public function setCampusNom(string $campusNom): self
+    public function setCampus(Campus $campus): self
     {
-        $this->campusNom = $campusNom;
+        $this->campus = $campus;
 
         return $this;
     }

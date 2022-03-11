@@ -2,11 +2,10 @@
 
 namespace App\Form;
 
-use App\Classes\FiltreSorties as ClassesFiltreSorties;
-use FiltreSorties;
+use App\Classes\FiltreSorties;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,9 +15,11 @@ class FiltreSortiesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('campusNom', ChoiceType::class, array(
-                'choices' => array('Saint Herblain' => 'Saint Herblain', 'Chartres de Bretagne' => 'Chartres de Bretagne',
-                 'La Roche sur Yon' => 'La Roche sur Yon'),
+            ->add('campus', EntityType::class, array(
+                'class' => 'App:Campus',
+                'placeholder' => '-- Choisir --',
+                'choice_label' => 'nom',
+                'required' => false,
                 ))
             ->add('nom')
             ->add('dateMin', DateTimeType::class,[
@@ -53,7 +54,7 @@ class FiltreSortiesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ClassesFiltreSorties::class,
+            'data_class' => FiltreSorties::class,
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Classes\FiltreSorties as ClassesFiltreSorties;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -49,46 +50,67 @@ class SortieRepository extends ServiceEntityRepository
     }
 
 
-    public function findByFilters(ClassesFiltreSorties $filtreSorties, EtatRepository $repoEtat, CampusRepository $repoCampus,
-     Participant $participantConnecte)
+    public function findByFilters(ClassesFiltreSorties $filtreSorties, Participant $participantConnecte)
     {
+        //Pour simplifier l'écriture, on hydrate des variables avec les paramètres du formulaire
+        $campus = $filtreSorties->getCampus();
+        $nom = $filtreSorties->getNom();
+        $dateMin = $filtreSorties->getDateMin();
+        $dateMax = $filtreSorties->getDateMax();
+        $isOrganisateur = $filtreSorties->getIsOrganisateur();
+        $isInscrit = $filtreSorties->getIsInscrit();
+        $isNonInscrit = $filtreSorties->getIsNonInscrit();
+        $isPassee = $filtreSorties->getIsPassee();
 
+        //Création du query builder. s ~= sortie
         $qb = $this->createQueryBuilder("s");
-
+        //Select all
         $qb->select('s');
 
-        // if ($filtreSorties) {
-            
-        //     $campusNom = $filtreSorties->getCampusNom();
-        //     $nom = $filtreSorties->getNom();
-        //     $dateMin = $filtreSorties->getDateMin();
-        //     $dateMax = $filtreSorties->getDateMax();
-        //     $isOrganisateur = $filtreSorties->getIsOrganisateur();
-        //     $isInscrit = $filtreSorties->getIsInscrit();
-        //     $isNonInscrit = $filtreSorties->getIsNonInscrit();
-        //     $isPassee = $filtreSorties->getIsPassee();
+        //On fait les jointures avec les tables requises
+        $qb->join('s.campus', 'c')->addSelect('c');
+        $qb->join('s.participants', 'p')->addSelect('p');
+        $qb->join('s.etat', 'e')->addSelect('e');
+        $qb->join('s.organisateur', 'o')->addSelect('o');
+        
 
-        //     if ($campusNom) {
-        //         $qb->andWhere('s.campus = '.$repoCampus->findOneBy(['nom' => $campusNom])->getId());
-        //     }
-        //     if ($nom) {
-        //         $qb->andWhere('s.nom like '.$nom);
-        //     }
+        //Affichage au chargement de la page d'accueil (ou quand le formulaire est vide)
+        //On récupère d'abord toutes les sorties sauf les Historisées et les Créées
+        $qb->andWhere('e.libelle != :historisee')->orWhere('e.libelle != :creee')
+            ->setParameter(':historisee', 'Historisée')
+            ->setParameter(':creee', 'Créée');
+        //On rajoute les sorties organisées par l'utilisateur
+        $qb->orWhere('s.organisateur = :user')
+            ->setParameter(':user', $participantConnecte);
 
 
+        // //On ajoute des conditions si le formulaire a été rempli (éléments not null)
+        //Si un campus est choisi, on ne garde parmis les sorties sélectionnées précédemment que celles qui sont associées au campus choisi
+        if ($campus != null) {
+            $qb->andWhere('s.campus = :campus')
+                ->setParameter(':campus', $campus);
+        }
+        //Si un nom est tapé, on ne garde que les sorties qui ont un nom contenant celui-ci
+        if ($nom != null) {
+            $qb->andWhere('s.nom LIKE :nom')
+                ->setParameter(':nom', '%'.$nom.'%');
+        }
 
-        // }else{
-            $qb->where('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Ouverte'])->getId())
-            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Cloturée'])->getId())
-            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Activité en cours'])->getId())
-            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Passée'])->getId())
-            ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Annulée'])->getId())
-            ->orWhere('s.organisateur = '.$participantConnecte->getId());
+        //Si on a une date minimum, on ne garde que les sorties dont la date de début est postérieure à celle-ci
+        // if ($dateMin !=null) {
+        //     $qb->andWhere('s.dateHeureDebut >= :dateMin') //NE MARCHE PAS : PROBLEME DATE ?
+        //         ->setParameter(':datemin', $dateMin);
         // }
+
+
+
+
+
+        //On les affiche par date de la sortie ascendante
         $qb->orderBy('s.dateHeureDebut', 'ASC');
 
+        //On retourne la liste des sorties obtenues
         return $qb->getQuery()->getResult();
-
     }
 
 
