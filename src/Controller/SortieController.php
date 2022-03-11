@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Classes\FiltreSorties as ClassesFiltreSorties;
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Form\AnnulerFormType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
@@ -17,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+
 
 class SortieController extends AbstractController
 {
@@ -33,7 +37,9 @@ class SortieController extends AbstractController
 
         
         //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '1021']); //temporaire
+
+        $participantConnecte = $repoParticipant->findOneBy(['id' => '43']); //temporaire
+
 
 
         //Envoyer la liste des campus
@@ -86,6 +92,7 @@ class SortieController extends AbstractController
             // $dateDebut = $sortie->getDateHeureDebut();
             
             // if($time > $dateDebut){
+
 
                 $etat=$etatRepo->findOneBy(['libelle'=> 'Annulée']);
 
