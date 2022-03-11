@@ -57,8 +57,11 @@
 
 
 <!-- Tableau de sortie -->
-    <!-- TODO : rajouter une barre de scroll avec Bootstrap -->
-<table class="table table-striped">
+    <!-- TODO : rajouter une barre de scroll avec Bootstrap -> OK Binh l'a fait -->
+
+  <div style="height: 500px; overflow: scroll;"> 
+
+  <table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Nom de la sortie</th>
@@ -103,7 +106,7 @@
                         <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
                         <!-- et Si dateDebut < now lien Annuler -->
                         {% if s.dateHeureDebut > date_jour %}
-                            <a href="{{ path('accueil',{id:s.id})}}">Annuler</a>
+                            <a href={{ path('annuler_sortir',{'id': s.id} )}}>Annuler</a>
                         {% endif %}
                     {% endif %}
                 <!-- Sinon -->
@@ -125,6 +128,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 
 
 <!-- Bouton création de sortie TODO : changer le lien, rediriger vers la création -->
