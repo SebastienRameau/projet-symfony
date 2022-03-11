@@ -57,34 +57,34 @@ class SortieRepository extends ServiceEntityRepository
 
         $qb->select('s');
 
-        if ($filtreSorties) {
+        // if ($filtreSorties) {
             
-            $campusNom = $filtreSorties->getCampusNom();
-            $nom = $filtreSorties->getNom();
-            $dateMin = $filtreSorties->getDateMin();
-            $dateMax = $filtreSorties->getDateMax();
-            $isOrganisateur = $filtreSorties->getIsOrganisateur();
-            $isInscrit = $filtreSorties->getIsInscrit();
-            $isNonInscrit = $filtreSorties->getIsNonInscrit();
-            $isPassee = $filtreSorties->getIsPassee();
+        //     $campusNom = $filtreSorties->getCampusNom();
+        //     $nom = $filtreSorties->getNom();
+        //     $dateMin = $filtreSorties->getDateMin();
+        //     $dateMax = $filtreSorties->getDateMax();
+        //     $isOrganisateur = $filtreSorties->getIsOrganisateur();
+        //     $isInscrit = $filtreSorties->getIsInscrit();
+        //     $isNonInscrit = $filtreSorties->getIsNonInscrit();
+        //     $isPassee = $filtreSorties->getIsPassee();
 
-            if ($campusNom) {
-                $qb->andWhere('s.campus = '.$repoCampus->findOneBy(['nom' => $campusNom])->getId());
-            }
-            if ($nom) {
-                $qb->andWhere('s.nom like '.$nom);
-            }
+        //     if ($campusNom) {
+        //         $qb->andWhere('s.campus = '.$repoCampus->findOneBy(['nom' => $campusNom])->getId());
+        //     }
+        //     if ($nom) {
+        //         $qb->andWhere('s.nom like '.$nom);
+        //     }
 
 
 
-        }else{
+        // }else{
             $qb->where('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Ouverte'])->getId())
             ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Cloturée'])->getId())
             ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Activité en cours'])->getId())
             ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Passée'])->getId())
             ->orWhere('s.etat = '.$repoEtat->findOneBy(['libelle' => 'Annulée'])->getId())
             ->orWhere('s.organisateur = '.$participantConnecte->getId());
-        }
+        // }
         $qb->orderBy('s.dateHeureDebut', 'ASC');
 
         return $qb->getQuery()->getResult();

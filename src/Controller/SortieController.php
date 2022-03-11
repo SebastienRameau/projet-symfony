@@ -47,7 +47,9 @@ class SortieController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $sortiesListe = $repoSortie->findByFilters($filtreSorties, $repoEtat, $repoCampus, $participantConnecte);
-            return $this->redirectToRoute('accueil');
+            return $this->redirectToRoute('accueil', [
+            'sorties_liste' => $sortiesListe,
+            ]);
         }
 
         //Gérer le bouton Rechercher
