@@ -4,7 +4,49 @@
 
 {% block main %}
 
+<div class="col-12 text-center">
 
+        <!-- Formulaire de filtrage -->
+        {{ form_start(form) }}
+            {# pseudo
+            {# {{ form_label(form.pseudo) }}
+            {{ form_widget(form.pseudo) }} #}
+
+            {# prénom #}
+            {# {{ form_label(form.prenom) }}
+            {{ form_widget(form.prenom) }} #}
+
+            {# nom #}
+            {# {{ form_label(form.nom) }}
+            {{ form_widget(form.nom) }} #}
+
+            {# telephone #}
+            {# {{ form_label(form.telephone) }}
+            {{ form_widget(form.telephone) }} #}
+
+            {# mail #}
+            {# {{ form_label(form.mail) }}
+            {{ form_widget(form.mail) }} #}
+
+            {# password #}
+            {# {{ form_label(form.password) }}
+            {{ form_widget(form.password) }} #}
+
+            {# campus #}
+            {# {{ form_label(form.campus) }}
+            {{ form_widget(form.campus) }} #}
+
+            {# photo #}
+            {# {{ form_label(form.photo) }}
+            {{ form_widget(form.photo) }} #} 
+            {{ form_row(form.photo) }}
+            
+            {{ form_rest(form) }}
+            <button type="submit">Enregistrer</button>
+            <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+        {{ form_end(form) }}
+            
+</div>
 
 
 
