@@ -43,7 +43,7 @@ class SortieController extends AbstractController
         $dateJour = $day . '/' . $month . '/' . $year;
 
 
-        //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
+        //Envoyer le participant connecté
         $participantConnecte = $this->getUser();
 
 
