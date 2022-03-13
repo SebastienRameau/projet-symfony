@@ -36,6 +36,7 @@ class SortieController extends AbstractController
         EtatRepository $repoEtat,
         ParticipantRepository $repoParticipant
     ): Response {
+
         //Envoyer la date du jour
         $date = explode("/", date('d/m/Y'));
         list($day, $month, $year) = $date;
@@ -43,7 +44,7 @@ class SortieController extends AbstractController
 
 
         //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '1045']); //temporaire
+        $participantConnecte = $this->getUser();
 
 
         //Envoyer la liste des campus
@@ -61,7 +62,7 @@ class SortieController extends AbstractController
 
         //Click "Rechercher"
         if ($form->isSubmitted()) {
-            $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte);
+            $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte, $dateJour);
             return $this->render('sortie/accueil.html.twig', [
                 'date_jour' => $dateJour,
                 'participant_connecte' => $participantConnecte,
@@ -71,7 +72,7 @@ class SortieController extends AbstractController
             ]);
         }
 
-        $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte);
+        $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte, $dateJour);
         return $this->render('sortie/accueil.html.twig', [
             'date_jour' => $dateJour,
             'participant_connecte' => $participantConnecte,
