@@ -32,9 +32,7 @@ class SortieController extends AbstractController
     public function sorties(
         Request $request,
         CampusRepository $repoCampus,
-        SortieRepository $repoSortie,
-        EtatRepository $repoEtat,
-        ParticipantRepository $repoParticipant
+        SortieRepository $repoSortie
     ): Response {
 
         //Envoyer la date du jour
@@ -79,6 +77,16 @@ class SortieController extends AbstractController
             'campus_liste' => $campusListe,
             'form' => $form->createView(),
             'sorties_liste' => $sortiesListe,
+        ]);
+    }
+
+    /**
+     * @Route("/afficher/{id}", name="afficher_sortie")
+     */
+    public function afficherSortie(Sortie $sortie): Response
+    {
+        return $this->render('sortie/afficherSortie.html.twig', [
+            'sortie' => $sortie,
         ]);
     }
 
