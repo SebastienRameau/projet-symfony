@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Classes\FiltreSorties;
 use App\Entity\Etat;
 use App\Entity\Lieu;
+use App\Entity\Participant;
 use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
 use App\Entity\Ville;
@@ -45,7 +46,6 @@ class SortieController extends AbstractController
 
         //Envoyer le participant connecté
         $participantConnecte = $this->getUser();
-
 
         //Envoyer la liste des campus
         $campusListe = $repoCampus->findAll();
