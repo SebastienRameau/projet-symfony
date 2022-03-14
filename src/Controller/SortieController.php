@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Classes\FiltreSorties;
 use App\Entity\Etat;
 use App\Entity\Lieu;
+use App\Entity\Participant;
 use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
 use App\Entity\Ville;
@@ -15,6 +16,7 @@ use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use PhpParser\Node\Expr\Isset_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +38,7 @@ class SortieController extends AbstractController
         EtatRepository $repoEtat,
         ParticipantRepository $repoParticipant
     ): Response {
-        
+
         //Envoyer la date du jour
         $date = explode("/", date('d/m/Y'));
         list($day, $month, $year) = $date;
@@ -73,6 +75,7 @@ class SortieController extends AbstractController
         }
 
         $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte);
+
         return $this->render('sortie/accueil.html.twig', [
             'date_jour' => $dateJour,
             'participant_connecte' => $participantConnecte,
@@ -97,10 +100,9 @@ class SortieController extends AbstractController
 
         if ($form->isSubmitted()) {
 
-            // $time = date('H:i:s \O\n d/m/Y');
-            // $dateDebut = $sortie->getDateHeureDebut();
-
-            // if($time > $dateDebut){
+            $this->addFlash(
+                'notice',
+                'Vous avez deja annule une sortie');
 
 
             $etat = $etatRepo->findOneBy(['libelle' => 'Annulée']);
@@ -111,11 +113,6 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('accueil');
         }
 
-        // // $this->addFlash(
-        // //     'notice',
-        // //     ' Vous ne pouvez pas annuler cette sortie parce que celle-ci a deja commencée'
-
-        // );
 
 
         return $this->render('sortie/annuler.html.twig', [
@@ -141,7 +138,7 @@ class SortieController extends AbstractController
 
               
                 $emi->flush();
-                return $this->redirectToRoute('acceuil');
+                return $this->redirectToRoute('accueil');
 
             }
             
@@ -164,27 +161,51 @@ class SortieController extends AbstractController
     /**
      * @Route("/inscrire/{id}", name="inscrire")
      */
-    public function inscrire(Request $rq , EntityManagerInterface $emi): Response
+    public function inscrire(Sortie $sortie, EntityManagerInterface $emi): Response
     {
 
-        $sortie = new Sortie();
+    $participantConnecte = $this->getUser();
+
+    $sortie->addParticipant($participantConnecte);
+
+    $emi -> flush();
+
+    $this->addFlash(
+        'notice',
+        'Vous avez incsrire une sortie');
 
 
-        $sortie-> setIn($rq-> get('title'));
-        
-       
 
 
-        $emi -> persist($sortie);
-        $emi -> flush();
+        return $this->redirectToRoute('accueil'); 
+
+
+        }
+
+        /**
+     * @Route("/desister/{id}", name="desister")
+     */
+    public function desister(Sortie $sortie, EntityManagerInterface $emi): Response
+    {
+
+    $participantConnecte = $this->getUser();
+
+    $sortie->removeParticipant($participantConnecte);
+
+
+    $emi -> flush();
+
+    $this->addFlash(
+        'notice',
+        'Vous avez desiste une sortie');
 
 
 
-        return $this->redirectToRoute('acceuil'); 
+
+        return $this->redirectToRoute('accueil'); 
 
 
-    }
-
+        }
 
 
 

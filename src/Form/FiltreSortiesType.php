@@ -3,10 +3,14 @@
 namespace App\Form;
 
 use App\Classes\FiltreSorties;
+use App\Entity\Sortie;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,7 +25,12 @@ class FiltreSortiesType extends AbstractType
                 'choice_label' => 'nom',
                 'required' => false,
                 ))
-            ->add('nom')
+            ->add('nom', TextType::class,[
+                'label' => 'Le nom de la sortie contient',
+                'required' => false,
+                // 'class' => Sortie::class,
+
+            ])
             ->add('dateMin', DateTimeType::class,[
                 'label' => 'Entre ',
                 'widget' => 'single_text',

@@ -210,19 +210,50 @@ class AppFixtures extends Fixture
 
             $dateNow = date_create(date('d-m-Y H:i:s'));
             $interval = date_diff($dateDebut, $dateNow);
+
+            $duree30 = $faker->numberBetween(30,30);
+
             
-            if ($nbInscrits == $nbInscriptionMax || $dateLimiteInscription < $dateNow) {
-                $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Cloturée']));
-            }elseif ($dateDebut < $dateNow && $interval->format('%a') > 30) {
+            // if ($nbInscrits == $nbInscriptionMax || $dateLimiteInscription < $dateNow) {
+            //     $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Cloturée']));
+
+            // if ($dateDebut < $dateNow && $interval->format('%R%a days') > 30) {
+                
+            //     $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Historisée']));
+
+            // }else if ($dateDebut < $dateNow && $interval->format('%i') >= $duree) {
+            //     $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Passée']));
+
+
+            // }else if ($dateDebut < $dateNow && $interval->format('%i') < $duree) {
+            //     $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Activité en cours']));
+
+
+            // }else{
+            //     $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']));
+            // }
+                    
+            if ($dateDebut < $dateNow && $interval->format('%R%a') > $duree30 ) {
+                
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Historisée']));
-            }elseif ($dateDebut < $dateNow && $interval->format('%i') >= $duree) {
-                $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Passée']));
-            }elseif ($dateDebut < $dateNow && $interval->format('%i') < $duree) {
+
+            }else if ($dateDebut < $dateNow && $interval->format('%i') < $duree) {
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Activité en cours']));
+
+
+            }else if ($dateDebut < $dateNow && $interval->format('%i') >= $duree) {
+                $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Passée']));
+
+            }else if ($nbInscrits == $nbInscriptionMax || $dateLimiteInscription < $dateNow && $interval->format('%R%a') < $duree30  ) {
+
+                $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Cloturée']));    
+
             }else{
                 $sortie->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle' => 'Ouverte']));
             }
-                        
+
+
+
             $sortie->addParticipant($organisateur);
             for ($j=0; $j < $nbInscrits-1; $j++) {
                 $sortie->addParticipant($faker->randomElement($participants));

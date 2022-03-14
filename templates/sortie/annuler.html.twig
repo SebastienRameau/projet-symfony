@@ -4,7 +4,7 @@
 
 {% block main %}
 
-<div class="text-center">
+<div class="text-center | my-4">
 
     <h2 class="text-center">Annuler une sortie</h2>
 
@@ -20,12 +20,17 @@
 
         {{ form_widget(formular)}}
     
-        {{ form_end(formular)}}
         
+        
+    <div class="text-center | my-4">
 
-        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+        <button type="submit" class="btn btn-success">Enregister</button>
 
-        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+        <a href= {{path('accueil')}} class="btn btn-secondary">Annuler</a>
+
+    </div>
+
+        {{ form_end(formular)}}
 
 </div>
 
