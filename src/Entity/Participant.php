@@ -8,12 +8,30 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $photoFilename;
+
+    public function getPhotoFilename(): ?string
+    {
+        return $this->photoFilename;
+    }
+
+    public function setPhotoFilename(string $photoFilename): self
+    {
+        $this->photoFilename = $photoFilename;
+
+        return $this;
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
