@@ -24,13 +24,14 @@ class FiltreSortiesType extends AbstractType
                 'placeholder' => '-- Choisir --',
                 'choice_label' => 'nom',
                 'required' => false,
+                'label' => 'Campus : '
                 ))
-            ->add('nom', TextType::class,[
-                'label' => 'Le nom de la sortie contient',
-                'required' => false,
-                // 'class' => Sortie::class,
 
-            ])
+            ->add('nom', TextType::class,[ //TODO : mettre la loupe
+                'required' => false,
+                'label' => 'Le nom de la sortie contient : '
+                ])
+
             ->add('dateMin', DateTimeType::class,[
                 'label' => 'Entre ',
                 'widget' => 'single_text',

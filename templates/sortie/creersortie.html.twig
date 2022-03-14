@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} {% endblock %}
+
+{% block main %}
+
+    <h2 class="text-center">Créer une sortie</h2>
+
+<div class="container">  
+
+
+    {% for flashMessage in app.session.flashbag.get('creation') %}
+
+    <div class="alert alert-success">
+
+    {{ flashMessage }}
+
+    </div>
+
+    {% endfor %}
+
+
+    <div class="row | my-5">
+
+        {{ form_start(formular)}}  
+
+        <div class="col-sm-2">
+            
+                <p>
+                    {{form_label(formular.nom)}}
+                    {{ form_errors(formular.nom) }}
+                </p> 
+                <p>
+                    {{form_label(formular.dateHeureDebut)}}
+                    {{ form_errors(formular.dateHeureDebut) }}
+                </p>
+                <p>
+                    {{form_label(formular.dateLimiteInscription)}}
+                    {{ form_errors(formular.dateLimiteInscription) }}
+                </p>
+                <p>
+                    {{form_label(formular.nbInscriptionMax)}}
+                    {{ form_errors(formular.nbInscriptionMax) }}
+                </p>
+                <p>
+                    {{form_label(formular.duree)}}
+                    {{ form_errors(formular.duree) }}
+                </p>
+                <p>
+                    {{form_label(formular.infosSortie)}}
+                    {{ form_errors(formular.infosSortie) }}
+                </p> 
+
+        </div>
+
+        <div class="col-sm-5">
+
+                <p>
+                {{ form_widget(formular.nom)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.dateHeureDebut)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.dateLimiteInscription)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.nbInscriptionMax )}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.duree)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.infosSortie)}} 
+                </p>
+
+        </div>
+
+        <div class="col-sm-2">
+
+                <p>
+                {{ form_label(formular.campus)}}
+                {{ form_errors(formular.campus) }}
+                </p>
+                 <p>
+                {{ form_label(formular.lieu)}}
+                {{ form_errors(formular.lieu) }}
+                </p>
+                <p>
+                <label>Rue : </label>
+                </p>
+                <p>
+                <label>Ville : </label> 
+                </p>
+                <p>
+                <label>Code postal : </label> 
+                </p>
+
+        </div>
+
+        <div class="col-sm-2">
+
+                <p>
+                {{ form_widget(formular.campus)}} 
+                </p>
+
+                 <p>
+                {{ form_widget(formular.lieu)}} 
+                </p>
+
+
+
+        </div>
+
+    </div>
+
+    <div>
+
+        {{ form_widget(formular.enregistrer) }}
+
+        {{ form_widget(formular.publier) }}
+
+        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+
+    </div>
+
+    {{ form_end(formular)}} 
+
+
+</div>
+
+
+{% endblock %}

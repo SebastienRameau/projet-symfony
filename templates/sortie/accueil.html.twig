@@ -4,26 +4,60 @@
 
 {% block main %}
 
+<div class="container"> 
+
 <div>
-<!-- Affichage de la date du jour -->
-<strong>{{date_jour}}</strong>
-<br>
-<!-- Affichage du participant connecté -->
-<h3>{{participant_connecte.prenom}} {{participant_connecte.nom}}</h3> <!-- temporaire -->
+
+    <!-- Affichage de la date du jour -->
+    <strong>{{date_jour}}</strong>
+    <br>
+    <!-- Affichage du participant connecté -->
+    <strong>{{participant_connecte.prenom}} {{participant_connecte.nom}}</strong> <!-- temporaire -->
 </div>
 
-{# 
 <div class="row | my-5">
-
-<!-- Formulaire de filtrage -->
-
     {{ form_start(form) }}
+    <h3>Filtrer les sorties</h3>
+    <div class="col-sm-2">
+        <p>
+            {{form_label(form.campus)}}
+            {{form_widget(form.campus)}}
+        </p>
+        <p>
+            {{form_label(form.nom)}}
+            {{form_widget(form.nom)}}
+        </p>
+        <p>
+            {{form_label(form.dateMin)}}
+            {{form_widget(form.dateMin)}}
+            {{form_label(form.dateMax)}}
+            {{form_widget(form.dateMax)}}
+        </p>
+    </div>
+    <div class="col-sm-5">
+        <p>
+            {{form_widget(form.isOrganisateur)}}
+            {{form_label(form.isOrganisateur)}}
+        </p>
+        <p>
+            {{form_widget(form.isInscrit)}}
+            {{form_label(form.isInscrit)}}
+        </p>
+        <p>
+            {{form_widget(form.isNonInscrit)}}
+            {{form_label(form.isNonInscrit)}}
+        </p>
+        <p>
+            {{form_widget(form.isPassee)}}
+            {{form_label(form.isPassee)}}
+        </p>
+    </div>
+    <div class="col-sm-5">
+        <button class="btn btn-primary">
+        Rechercher
+        </button>
+    </div>
 
-    {{ form_widget(form) }}
-
-    <button class="btn btn-primary">
-    Rechercher
-    </button>
 
     {{ form_end(form) }}
 
@@ -120,6 +154,8 @@
     </div> 
     {% endfor %}
 
+</div>
+
 
 <!-- Tableau de sortie -->
     <!-- TODO : rajouter une barre de scroll avec Bootstrap -> OK Binh l'a fait -->
@@ -172,7 +208,7 @@
                         <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
                     <!-- Sinon lien Afficher -->
                     {% else %}
-                        <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                        <a href="{{ path('afficher_sortie',{id:s.id})}}">Afficher</a>
                         <!-- et Si dateDebut < now lien Annuler -->
                         {% if s.dateHeureDebut > date_jour %}
                             <a href={{ path('annuler_sortir',{'id': s.id} )}}>Annuler</a>
@@ -181,7 +217,7 @@
                 <!-- Sinon -->
                 {% else %}
                     <!-- lien Afficher -->
-                    <a href="{{ path('accueil',{id:s.id})}}">Afficher</a>
+                    <a href="{{ path('afficher_sortie',{id:s.id})}}">Afficher</a>
                     <!-- Si (etat = Ouverte ou etat = Cloturee) et inscrit = true et dateDebut < now alors lien Se désister-->
                     {% if (s.etat.libelle == "Ouverte" or s.etat.libelle == "Cloturée") and
                      (participant_connecte in s.participants) and 
@@ -199,9 +235,8 @@
 </table>
 </div>
 
-<div class= "my-4">
+<!-- Bouton création de sortie -->
+<a href= {{path('creer_sortie')}} class="btn btn-secondary">Créer une sortie</a>
 
-<!-- Bouton création de sortie TODO : changer le lien, rediriger vers la création -->
-<input type="submit" name="creer_sortie" id="creer_sortie" href="{{ path('accueil')}}" value="Créer une sortie">
-</div> 
+
 {% endblock %}
