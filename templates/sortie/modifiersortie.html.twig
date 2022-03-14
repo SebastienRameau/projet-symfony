@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} {% endblock %}
+
+{% block main %}
+
+    <h2 class="text-center">Modifier une sortie</h2>
+
+<div class="container">  
+
+    <div class="row | my-5">
+
+        {# {{ form_start(formular)}}   #}
+
+        <div class="col-sm-2">
+            
+                <p>
+                    {{form_label(formular.nom)}}
+                </p> 
+
+                <p>
+                    {{form_label(formular.dateHeureDebut)}}
+                </p>
+
+                <p>
+                    {{form_label(formular.dateLimiteInscription)}}
+                </p>
+
+                <p>
+                    {{form_label(formular.nbInscriptionMax)}}
+                </p>
+                
+                <p>
+                    {{form_label(formular.duree)}}
+                </p>
+                
+                <p>
+                    {{form_label(formular.infosSortie)}}
+                </p> 
+
+        </div>
+
+
+        <div class="col-sm-5">
+
+                <p>
+                {{ form_widget(formular.nom)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.dateHeureDebut)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.dateLimiteInscription)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.nbInscriptionMax )}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.duree)}} 
+                </p>
+
+                <p>
+                {{ form_widget(formular.infosSortie)}} 
+                </p>
+
+        </div>
+
+        <div class="col-sm-2">
+
+                <p>
+                {{ form_label(formular.campus)}} 
+                </p>
+
+                 <p>
+                {{ form_label(formular.lieu)}} 
+                </p>
+
+                <p>
+                    <label>Rue : </label>
+                </p>
+
+                <p>
+                <label>Code postal : </label> 
+                </p>
+
+                <p>
+                
+                </p>
+
+
+
+        </div>
+
+        <div class="col-sm-2">
+
+                <p>
+                {{ form_widget(formular.campus)}} 
+                </p>
+
+                 <p>
+                {{ form_widget(formular.lieu)}} 
+                </p>
+
+                 <p>
+                {{ list_sortie.lieu.rue }}
+                </p>
+
+                 <p>
+                {{ list_sortie.lieu.ville .codePostal }}
+                </p>
+
+
+
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+    <div>
+      
+        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+
+        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+    </div>
+
+
+
+
+
+{% endblock %}

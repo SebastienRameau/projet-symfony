@@ -9,6 +9,7 @@ use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Form\AnnulerFormType;
+use App\Form\ModifierSortieType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
@@ -35,14 +36,15 @@ class SortieController extends AbstractController
         EtatRepository $repoEtat,
         ParticipantRepository $repoParticipant
     ): Response {
+
         //Envoyer la date du jour
         $date = explode("/", date('d/m/Y'));
         list($day, $month, $year) = $date;
         $dateJour = $day . '/' . $month . '/' . $year;
 
 
-        //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '95']); //temporaire 1045
+        //Envoyer le participant connecté
+        $participantConnecte = $this->getUser();
 
 
         //Envoyer la liste des campus
@@ -60,7 +62,7 @@ class SortieController extends AbstractController
 
         //Click "Rechercher"
         if ($form->isSubmitted()) {
-            $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte);
+            $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte, $dateJour);
             return $this->render('sortie/accueil.html.twig', [
                 'date_jour' => $dateJour,
                 'participant_connecte' => $participantConnecte,
@@ -70,7 +72,7 @@ class SortieController extends AbstractController
             ]);
         }
 
-        $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte);
+        $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte, $dateJour);
         return $this->render('sortie/accueil.html.twig', [
             'date_jour' => $dateJour,
             'participant_connecte' => $participantConnecte,
@@ -123,4 +125,42 @@ class SortieController extends AbstractController
 
         ]);
     }
+
+    /**
+     * @Route("/modifier/{id}", name="modifier_sortir")
+     */
+    public function modifier_sortir(Sortie $sortie,EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
+    {
+
+        $form = $this->createForm(ModifierSortieType::class,$sortie);
+
+        $form->handleRequest($rq);
+
+
+        if ($form->isSubmitted()){
+
+              
+                $emi->flush();
+                return $this->redirectToRoute('acceuil');
+
+            }
+            
+            $this->addFlash(
+                'notice',
+                ' Vous avez deja modifie une sortie'
+
+            );
+
+    
+        return $this->render('sortie/modifiersortie.html.twig', [
+
+            'formular'=> $form->createView(),
+            'list_sortie'=> $sortie
+            
+        ]);
+    }
+
+
+
+
 }
