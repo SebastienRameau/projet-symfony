@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +24,7 @@ class FiltreSortiesType extends AbstractType
                 'required' => false,
                 'label' => 'Campus : '
                 ))
-            ->add('nom',SearchType::class,[
+            ->add('nom', TextType::class,[ //TODO : mettre la loupe
                 'required' => false,
                 'label' => 'Le nom de la sortie contient : '
                 ])
