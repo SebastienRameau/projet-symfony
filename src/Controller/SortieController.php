@@ -36,14 +36,15 @@ class SortieController extends AbstractController
         EtatRepository $repoEtat,
         ParticipantRepository $repoParticipant
     ): Response {
+        
         //Envoyer la date du jour
         $date = explode("/", date('d/m/Y'));
         list($day, $month, $year) = $date;
         $dateJour = $day . '/' . $month . '/' . $year;
 
 
-        //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '1045']); //temporaire
+        //Envoyer le participant connecté
+        $participantConnecte = $this->getUser();
 
 
         //Envoyer la liste des campus
@@ -158,6 +159,33 @@ class SortieController extends AbstractController
             
         ]);
     }
+
+
+    /**
+     * @Route("/inscrire/{id}", name="inscrire")
+     */
+    public function inscrire(Request $rq , EntityManagerInterface $emi): Response
+    {
+
+        $sortie = new Sortie();
+
+
+        $sortie-> setIn($rq-> get('title'));
+        
+       
+
+
+        $emi -> persist($sortie);
+        $emi -> flush();
+
+
+
+        return $this->redirectToRoute('acceuil'); 
+
+
+    }
+
+
 
 
 
