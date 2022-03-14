@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\ModifierProfilType;
+use App\Repository\CampusRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Proxies\__CG__\App\Entity\Participant as EntityParticipant;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -33,31 +36,44 @@ class ProfilController extends AbstractController
 
 
     /**
-     * @Route("/monprofil", name="app_profil")
+     * @Route("/monprofil/", name="app_profil")
      */
-    public function modifierProfil(Request $request, Participant $participant, EntityManagerInterface $em, SluggerInterface $slugger) : Response
-    {
-         /** 
+    public function modifierProfil(Request $request, EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger, CampusRepository $repoCampus) : Response{
+        /** 
           * @var Participant $participant 
           */
-        $participant = $this->getUser();
+        $participant = new Participant();
+
         
-        $form = $this->createForm(ModifierProfilType::class, $participant);
-        $form->handleRequest($request);
+        $formModifierParticipant = $this->createForm(ModifierProfilType::class, $participant);
+        $formModifierParticipant->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formModifierParticipant->isSubmitted() && $formModifierParticipant->isValid()) {
+
+            $password = $formModifierParticipant->get('password')->getData();
+            if ($password) {
+                //pour hasher le mot de passe
+                $participant->setPassword(
+                    $passwordHasher->hashPassword(
+                        $participant,
+                        $formModifierParticipant->get('password')->getData()
+                    )
+                    );
+                $entityManagerInterface->persist($participant);
+            }
+
             /** 
-             * @var UploadedFile $photoFile
+             * @var UploadedFile $photoFilename
              */
-            $photoFile = $form->get('photo')->getData();
+            $photoFilename = $formModifierParticipant->get('photoFilename')->getData();
 
-            if ($photoFile) {
-                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+            if ($photoFilename) {
+                $originalFilename = pathinfo($photoFilename->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFilename->guessExtension();
                 
                 try {
-                    $photoFile->move(
+                    $photoFilename->move(
                         $this->getParameter('photo_directory'),
                         $newFilename
                     );
@@ -66,19 +82,19 @@ class ProfilController extends AbstractController
                 }
                 
                 $participant->setPhotoFilename($newFilename);
-                $em->persist($participant);
-                
-                // if ($password) {
-                //     # code...
-                // }
+                $entityManagerInterface->persist($participant);
+            
             }
-            $em->flush();
-            return $this->redirectToRoute('accueil');
+            $entityManagerInterface->flush();
+            
         }
 
-        return $this->render('profil/monprofil.html.twig', [
-            'form'=> $form
-            // 'participant' => $participant,
+        return $this->renderForm('profil/monprofil.html.twig', [
+            'participant' => $participant,
+            'formModifierParticipant' => $formModifierParticipant,
+            // 'photoFilename' => $photoFilename
+
         ]);
-    }
-}      
+   
+    }      
+}

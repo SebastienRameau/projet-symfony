@@ -42,7 +42,7 @@ class SortieController extends AbstractController
 
 
         //Envoyer le participant connecté (Voir plus tard, quand Estelle aura fait la connexion)
-        $participantConnecte = $repoParticipant->findOneBy(['id' => '1045']); //temporaire
+        $participantConnecte = $repoParticipant->findOneBy(['id' => '95']); //temporaire 1045
 
 
         //Envoyer la liste des campus

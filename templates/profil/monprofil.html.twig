@@ -6,45 +6,54 @@
 
 <div class="col-12 text-center">
 
+    
+    <h2 class="text-center">Mon profil</h2>
         <!-- Formulaire de filtrage -->
-        {{ form_start(form) }}
-            {# pseudo
-            {# {{ form_label(form.pseudo) }}
-            {{ form_widget(form.pseudo) }} #}
+        {{ form_start(formModifierParticipant) }}
 
-            {# prénom #}
-            {# {{ form_label(form.prenom) }}
-            {{ form_widget(form.prenom) }} #}
-
-            {# nom #}
-            {# {{ form_label(form.nom) }}
-            {{ form_widget(form.nom) }} #}
-
-            {# telephone #}
-            {# {{ form_label(form.telephone) }}
-            {{ form_widget(form.telephone) }} #}
-
-            {# mail #}
-            {# {{ form_label(form.mail) }}
-            {{ form_widget(form.mail) }} #}
-
-            {# password #}
-            {# {{ form_label(form.password) }}
-            {{ form_widget(form.password) }} #}
-
-            {# campus #}
-            {# {{ form_label(form.campus) }}
-            {{ form_widget(form.campus) }} #}
-
-            {# photo #}
-            {# {{ form_label(form.photo) }}
-            {{ form_widget(form.photo) }} #} 
-            {{ form_row(form.photo) }}
+            <h4 class="text-center">{{ form_widget(formModifierParticipant) }}</h4>
             
-            {{ form_rest(form) }}
-            <button type="submit">Enregistrer</button>
-            <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
-        {{ form_end(form) }}
+            {# changer le label du password "Mot de passe" #}
+
+            {# changer le label du password "Confirmation" #}
+
+            {# changer la value du bouton Ma photo "Télécharger vers le serveur" #}
+
+            {# décocher la ligne en dessous pour voir l'erreur généré #}
+            {# {{ form_widget(formModifierParticipant.photoFilename, { 'label': 'Click me' }) }} #}
+
+
+            {# <div>
+            {{ form_row(formModifierParticipant) }}
+                <div>
+                    {{ form_label(formModifierParticipant.password.first_options, "Mot de passe") }}
+                    {{ form_label(formModifierParticipant.password.second_options, "Confirmation") }}
+                </div>
+            </div> #}
+                {# {{ form_row(formModifierParticipant) }}
+                    <p>{{ form_label(formModifierParticipant.pseudo, "Confirmation") }}</p>
+                    <p>{{ form_label(formModifierParticipant.prenom, "Confirmation") }}</p>
+                    <p>{{ form_label(formModifierParticipant.telephone, "Confirmation") }}</p>
+                    <p>{{ form_label(formModifierParticipant.mail, "Confirmation") }}</p>
+                    <p>{{ form_label(formModifierParticipant.password, "Confirmation") }}</p>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <p>{{ form_label(formModifierParticipant.campus, "Confirmation") }}</p>
+                    <p>{{ form_label(formModifierParticipant.photoFilename, "Confirmation") }}</p> #}
+                    {# {{ form_row(form.password.primary) }}
+                    {{ form_row(form.password.secondary) }} #}
+                    {# {{ form_label(form.password, 
+                        'first_options' => array['label' => 'Mot de passe'] 
+                        'second_options' => array['label' => 'Confirmation'])
+                    }} #}
+                    {# {{ form_label(form.password, {'label' : 'Confirmation'}) }} #}
+                    {# {{ form_row(form.photoFilename) }} #}
+                <a href="{{ participant.photoFilename }}"></a>
+                <div>
+                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+                </div>
+
+        {{ form_end(formModifierParticipant) }}
             
 </div>
 
