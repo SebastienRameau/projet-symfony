@@ -7,6 +7,7 @@
 <div class="container"> 
 
 <div>
+
     <!-- Affichage de la date du jour -->
     <strong>{{date_jour}}</strong>
     <br>
@@ -57,9 +58,101 @@
         </button>
     </div>
 
+
     {{ form_end(form) }}
 
-</div>
+</div> #}
+
+
+<div class = "row | my-4">
+
+        <div class = "col-sm-4">
+            
+                <p>
+                    {{form_label(form.campus)}}
+                </p> 
+
+                <p>
+                    {{form_label(form.nom)}}
+                </p>
+
+                <p>
+                    {{form_label(form.dateMin)}}
+
+                </p>
+
+                 <p>
+                    {{form_label(form.dateMax)}}
+                </p>
+
+                <p>
+                    {{form_label(form.isOrganisateur)}}
+                </p>
+                
+                <p>
+                    {{form_label(form.isInscrit)}}
+                </p>
+                
+                <p>
+                    {{form_label(form.isNonInscrit)}}
+                </p>
+
+                <p>
+                    {{form_label(form.isPassee)}}
+                </p> 
+
+        </div>
+
+
+        <div class="col-sm-5">
+
+                <p>
+                {{ form_widget(form.campus)}} 
+                </p>
+
+                <p>
+                {{ form_widget(form.nom)}} 
+                </p>
+
+               <p>
+                    {{form_widget(form.dateMin)}}
+
+                </p>
+
+                 <p>
+                    {{form_widget(form.dateMax)}}
+                </p>
+
+                <p>
+                    {{form_widget(form.isOrganisateur)}}
+                </p>
+                
+                <p>
+                    {{form_widget(form.isInscrit)}}
+                </p>
+                
+                <p>
+                    {{form_widget(form.isNonInscrit)}}
+                </p>
+
+                <p>
+                    {{form_widget(form.isPassee)}}
+                </p> 
+        </div>
+
+        <div>
+
+        <button class="btn btn-primary">Rechercher</button>
+
+        </div>
+
+    </div>
+
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+    <div class="alert alert-success">
+    {{ flashMessage }}
+    </div> 
+    {% endfor %}
 
 </div>
 
@@ -67,11 +160,14 @@
 <!-- Tableau de sortie -->
     <!-- TODO : rajouter une barre de scroll avec Bootstrap -> OK Binh l'a fait -->
 
-  <div style="height: 500px; overflow: scroll;"> 
+  <div style="height: 500px; overflow: scroll;">   
+
 
   <table class="table table-bordered table-striped">
-    <thead>
+    
+    <thead class="fixed">
         <tr>
+            <th>Numero</th>
             <th>Nom de la sortie</th>
             <th>Date de la sortie</th>
             <th>Clôture</th>
@@ -85,6 +181,7 @@
     <tbody>
         {% for s in sorties_liste %}
         <tr>
+            <td>{{ loop.index }}</td>
             <td>{{s.nom}}</td>
             <td>{{s.dateHeureDebut|date('Y-m-d h:i')}}</td>
             <td>{{s.dateLimiteInscription|date('Y-m-d')}}</td>
@@ -107,7 +204,7 @@
                 {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->
                     <!-- Si etat = cree alors lien Modifier et lien = Publier -->
                     {% if s.etat.libelle == "Créée" %}
-                        <a href="{{ path('accueil',{id:s.id})}}">Modifier</a>
+                        <a href={{ path('modifier', {'id':s.id} )}}>Modifier</a>
                         <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
                     <!-- Sinon lien Afficher -->
                     {% else %}
@@ -125,10 +222,10 @@
                     {% if (s.etat.libelle == "Ouverte" or s.etat.libelle == "Cloturée") and
                      (participant_connecte in s.participants) and 
                      (s.dateHeureDebut > date_jour) %}
-                        <a href="{{ path('accueil',{id:s.id})}}">Se désister</a>
+                        <a href={{ path('desister', {'id':s.id} )}}>Se désister</a>
                     <!-- Sinon, Si etat = Ouverte alors lien S'inscrire (sinon rien)-->
                     {% elseif s.etat.libelle == "Ouverte" %}
-                        <a href="{{ path('accueil',{id:s.id})}}">S'inscrire</a>
+                        <a href={{ path('inscrire', {'id':s.id } )}}>S'inscrire</a>
                     {% endif %}
                 {% endif %}
             </td>
@@ -140,5 +237,6 @@
 
 <!-- Bouton création de sortie -->
 <a href= {{path('creer_sortie')}} class="btn btn-secondary">Créer une sortie</a>
+
 
 {% endblock %}
