@@ -9,6 +9,7 @@ use App\Form\FiltreSortiesType;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Form\AnnulerFormType;
+use App\Form\CreerSortieType;
 use App\Form\ModifierSortieType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
@@ -49,10 +50,6 @@ class SortieController extends AbstractController
         $campusListe = $repoCampus->findAll();
 
 
-        //Gérer le bouton Créer une sortie
-        //Non : rediriger vers la méthode de création au click sur le bouton
-
-
         //Créer et envoyer le formulaire de recherche de sorties
         $filtreSorties = new FiltreSorties();
         $form = $this->createForm(FiltreSortiesType::class, $filtreSorties);
@@ -80,6 +77,7 @@ class SortieController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/afficher/{id}", name="afficher_sortie")
      */
@@ -87,6 +85,53 @@ class SortieController extends AbstractController
     {
         return $this->render('sortie/afficherSortie.html.twig', [
             'sortie' => $sortie,
+        ]);
+    }
+
+
+    /**
+     * @Route("/creer", name="creer_sortie")
+     */
+    public function creerSortie(EtatRepository $etatRepo, Request $request, EntityManagerInterface $em): Response
+    {
+        $participantConnecte = $this->getUser();
+
+        $nouvelleSortie = new Sortie();
+
+        $formular = $this->createForm(CreerSortieType::class,$nouvelleSortie);
+
+        $formular->handleRequest($request);
+
+        if ($formular->isSubmitted() && $formular->isValid()) {
+            //Si on a cliqué sur Enregistrer, la sortie est créée avec l'état "Créée" (donc, non publiées)
+            if ($formular->getClickedButton() === $formular->get('enregistrer')) {
+                $nouvelleSortie->setEtat($etatRepo->findOneBy(['libelle' => 'Créée']));
+                $this->addFlash(
+                    'creation',
+                    'La sortie a été enregistrée comme "en cours de création"'
+                );
+            }
+            //Si on a cliqué sur Publier, la sortie est créée avec l'état "Ouverte" (donc publiée et accessible par les autres utilisateurs)
+            if ($formular->getClickedButton() === $formular->get('publier')) {
+                $nouvelleSortie->setEtat($etatRepo->findOneBy(['libelle' => 'Ouverte']));
+                $this->addFlash(
+                    'creation',
+                    'La sortie a été créée et publiée'
+                );
+            }
+            //Le participant connecté est ajouté en temps qu'organisateur...
+            $nouvelleSortie->setOrganisateur($participantConnecte);
+            // ...et premier inscrit de la sortie
+            $nouvelleSortie->addParticipant($participantConnecte);
+            $em->persist($nouvelleSortie);
+            $em->flush();
+            return $this->render('sortie/creerSortie.html.twig', [
+                'formular' => $formular->createView(),
+            ]);
+        }
+
+        return $this->render('sortie/creerSortie.html.twig', [
+            'formular' => $formular->createView(),
         ]);
     }
 
@@ -149,7 +194,7 @@ class SortieController extends AbstractController
 
               
                 $emi->flush();
-                return $this->redirectToRoute('acceuil');
+                return $this->redirectToRoute('accueil');
 
             }
             
