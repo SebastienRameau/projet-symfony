@@ -5,7 +5,6 @@
 {% block main %}
 
 <div class="col-12 text-center">
-
     
     <h2 class="text-center">Mon profil</h2>
         <!-- Formulaire de filtrage -->
@@ -13,45 +12,26 @@
 
             <h4 class="text-center">{{ form_widget(formModifierParticipant) }}</h4>
             
-            {# changer le label du password "Mot de passe" #}
+            {# pour hasher le password #}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('formModifierParticipant.password') }}">
 
-            {# changer le label du password "Confirmation" #}
+            {# tentative changement de la valeur texte du bouton pour charger une image #}
+                {# {{ form_row(form.photoFilename) }} #}
+                {# {{ form_label(formModifierParticipant.photoFilename, "Confirmation") }} #}
+
+            {# tentative pour afficher la photo chargée #}
+                {# <a href="{{ participant.photoFilename }}"></a> #}
+                {# {{ formModifierParticipant.photoFilename }} #}
 
             {# changer la value du bouton Ma photo "Télécharger vers le serveur" #}
 
-            {# décocher la ligne en dessous pour voir l'erreur généré #}
-            {# {{ form_widget(formModifierParticipant.photoFilename, { 'label': 'Click me' }) }} #}
+            <div>
+                {# le bouton enregistrer qui envoie les données en BDD, et qui doit renvoyer vers la page d'accueil #}
+                <button type="submit" method="POST" class="btn btn-secondary" href="{{ path('accueil') }}" >Enregistrer</button>
 
-
-            {# <div>
-            {{ form_row(formModifierParticipant) }}
-                <div>
-                    {{ form_label(formModifierParticipant.password.first_options, "Mot de passe") }}
-                    {{ form_label(formModifierParticipant.password.second_options, "Confirmation") }}
-                </div>
-            </div> #}
-                {# {{ form_row(formModifierParticipant) }}
-                    <p>{{ form_label(formModifierParticipant.pseudo, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.prenom, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.telephone, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.mail, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.password, "Confirmation") }}</p>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <p>{{ form_label(formModifierParticipant.campus, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.photoFilename, "Confirmation") }}</p> #}
-                    {# {{ form_row(form.password.primary) }}
-                    {{ form_row(form.password.secondary) }} #}
-                    {# {{ form_label(form.password, 
-                        'first_options' => array['label' => 'Mot de passe'] 
-                        'second_options' => array['label' => 'Confirmation'])
-                    }} #}
-                    {# {{ form_label(form.password, {'label' : 'Confirmation'}) }} #}
-                    {# {{ form_row(form.photoFilename) }} #}
-                <a href="{{ participant.photoFilename }}"></a>
-                <div>
-                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
-                    <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
-                </div>
+                {# le bouton retour, redirection page d'accueil sans modifier les informations du profil #}
+                <a href="{{ path('accueil' )}}" class="btn btn-secondary">Retour</a>
+            </div>
 
         {{ form_end(formModifierParticipant) }}
             

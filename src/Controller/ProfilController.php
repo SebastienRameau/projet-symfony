@@ -38,35 +38,43 @@ class ProfilController extends AbstractController
     /**
      * @Route("/monprofil/", name="app_profil")
      */
-    public function modifierProfil(Request $request, EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger, CampusRepository $repoCampus) : Response{
+    public function modifierProfil(Request $request, EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger) : Response{
         /** 
           * @var Participant $participant 
           */
-        $participant = new Participant();
-
-        
-        $formModifierParticipant = $this->createForm(ModifierProfilType::class, $participant);
+        $formModifierParticipant = $this->createForm(ModifierProfilType::class, $this->getUser());
         $formModifierParticipant->handleRequest($request);
 
         if ($formModifierParticipant->isSubmitted() && $formModifierParticipant->isValid()) {
-
+            
             $password = $formModifierParticipant->get('password')->getData();
+            // à revoir car la bdd n'enregistre pas le changement de password
             if ($password) {
                 //pour hasher le mot de passe
-                $participant->setPassword(
+                $this->getUser()->setPassword(
                     $passwordHasher->hashPassword(
-                        $participant,
+                        $this->getUser(),
                         $formModifierParticipant->get('password')->getData()
                     )
                     );
-                $entityManagerInterface->persist($participant);
+                $password = $formModifierParticipant->getData();
+                $entityManagerInterface->persist($this->getUser());
             }
+
+            //changer de campus (en cours car la bdd n'enregistre pas le changement)
+            // $campus = $formModifierParticipant->get('campus')->getData();
+            // if ($campus) {
+            //     $this->getUser()->setCampus();
+
+            //     $campus = $formModifierParticipant->get('campus')->getData();
+            //     $entityManagerInterface->persist($this->getUser());
+            // }
 
             /** 
              * @var UploadedFile $photoFilename
              */
             $photoFilename = $formModifierParticipant->get('photoFilename')->getData();
-
+            
             if ($photoFilename) {
                 $originalFilename = pathinfo($photoFilename->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -81,20 +89,14 @@ class ProfilController extends AbstractController
                     // ... handle exception if something happens during file upload
                 }
                 
-                $participant->setPhotoFilename($newFilename);
-                $entityManagerInterface->persist($participant);
+                $this->getUser()->setPhotoFilename($newFilename);
+                $entityManagerInterface->persist($this->getUser());
             
             }
             $entityManagerInterface->flush();
-            
         }
-
         return $this->renderForm('profil/monprofil.html.twig', [
-            'participant' => $participant,
             'formModifierParticipant' => $formModifierParticipant,
-            // 'photoFilename' => $photoFilename
-
         ]);
-   
     }      
 }
