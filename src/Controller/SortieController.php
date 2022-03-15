@@ -23,8 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-
+use Symfony\Component\Security\Core\Security;
 
 class SortieController extends AbstractController
 {
@@ -68,8 +67,17 @@ class SortieController extends AbstractController
             ]);
         }
 
-
+        //Pour que les données affichées lors du premier chargement de la page correspondent à ce qui est attendu dans la maquette,
+        //on set les attributs nécessaires de $filtreSorties. La cohérence avec la vue sera fait en JS (je suppose).
+        $filtreSorties->setIsOrganisateur(true)->setIsInscrit(true)->setIsNonInscrit(true)
+            //Note : le getCampus seul renvoie un campus sans nom, avec juste un id ;
+            //peut-être parce que participantConnecte a été hydratée en tant que User et pas en tant que Participant ?
+            ->setCampus($repoCampus->findOneBy(['id' => $participantConnecte->getCampus()->getId()]));
+        
         $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte, $dateJour);
+
+        //Réinitialise filtreSorties, pour que ses champ soient vides avant de valider le formulaire
+        $filtreSorties = new FiltreSorties();
 
         return $this->render('sortie/accueil.html.twig', [
             'date_jour' => $dateJour,
@@ -90,6 +98,24 @@ class SortieController extends AbstractController
             'sortie' => $sortie,
         ]);
     }
+
+    /**
+     * @Route("/publier/{id}", name="publier_sortie")
+     */
+    public function publierSortie(Sortie $sortie, EtatRepository $etatRepo, EntityManagerInterface $em): Response
+    {
+        $sortie->setEtat($etatRepo->findOneBy(['libelle' => 'Ouverte']));
+
+        $this->addFlash(
+            'notice',
+            'La sortie a été publiée'
+        );
+
+        $em->persist($sortie);
+        $em->flush();
+
+        return $this->redirectToRoute('accueil');
+    }    
 
 
     /**
