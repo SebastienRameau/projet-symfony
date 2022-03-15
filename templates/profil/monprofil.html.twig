@@ -5,8 +5,8 @@
 {% block main %}
 
 <div class="col-12 text-center">
-
     
+
     <h2 class="text-center text-primary">Mon profil</h2>
 
         <!-- Formulaire de filtrage -->
@@ -17,6 +17,13 @@
 
 
          {# <img src="{{ asset('img/photoFilename')}}">
+
+
+    <h2 class="text-center">Mon profil</h2>
+
+    {# tentative pour afficher la photo chargée #}
+       <img src="{{ asset('photoFilename')}}">
+
 
        <!-- Formulaire de filtrage -->
         {{ form_start(formModifierParticipant) }}
@@ -86,6 +93,16 @@
                 </div>
             </div>
         </div>
+
+            <div>
+                {# le bouton enregistrer qui envoie les données en BDD, et qui doit renvoyer vers la page d'accueil #}
+                <button type="submit" method="POST" class="btn btn-secondary" href={{ path('accueil') }} >Enregistrer</button>
+
+                {# le bouton retour, redirection page d'accueil sans modifier les informations du profil #}
+                <a href="{{ path('accueil' )}}" class="btn btn-secondary">Retour</a>
+            </div>
+
+
         {{ form_end(formModifierParticipant) }}
     </div>
             
