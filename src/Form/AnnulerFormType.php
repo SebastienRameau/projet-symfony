@@ -20,13 +20,21 @@ class AnnulerFormType extends AbstractType
         //    ->add('etat')
             // ->add('lieu')
 
-            ->add('motif' , TextareaType::class, [
-                'mapped' => false,
-                'attr' => array('rows' => '5','cols' => '50'),
+            // ->add('motif' , TextareaType::class, [
+            //     'mapped' => false,
+            //     'attr' => array('rows' => '5','cols' => '50'),
+            //     'label' => 'Motif'   
+            // ]
+            // )
 
-            ]
-            )
-        ;
+            ->add('infosSortie', TextareaType::class, [
+                'mapped' => true,
+                'required' => false,
+
+                'attr' => array('rows' => '5','cols' => '50'),
+                'label' => 'Motif'
+
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
