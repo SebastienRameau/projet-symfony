@@ -15,59 +15,7 @@
     <h4 class='text-primary'>{{participant_connecte.prenom}} {{participant_connecte.nom}}</h4> 
 </div>
 
-<<<<<<< HEAD
-{# <div class="row | my-5">
-    {{ form_start(form) }}
-    <h3>Filtrer les sorties</h3>
-    <div class="col-sm-2">
-        <p>
-            {{form_label(form.campus)}}
-            {{form_widget(form.campus)}}
-        </p>
-        <p>
-            {{form_label(form.nom)}}
-            {{form_widget(form.nom)}}
-        </p>
-        <p>
-            {{form_label(form.dateMin)}}
-            {{form_widget(form.dateMin)}}
-            {{form_label(form.dateMax)}}
-            {{form_widget(form.dateMax)}}
-        </p>
-    </div>
-    <div class="col-sm-5">
-        <p>
-            {{form_widget(form.isOrganisateur)}}
-            {{form_label(form.isOrganisateur)}}
-        </p>
-        <p>
-            {{form_widget(form.isInscrit)}}
-            {{form_label(form.isInscrit)}}
-        </p>
-        <p>
-            {{form_widget(form.isNonInscrit)}}
-            {{form_label(form.isNonInscrit)}}
-        </p>
-        <p>
-            {{form_widget(form.isPassee)}}
-            {{form_label(form.isPassee)}}
-        </p>
-    </div>
-    <div class="col-sm-5">
-        <button class="btn btn-primary">
-        Rechercher
-        </button>
-    </div>
-
-
-    {{ form_end(form) }}
-
-</div> #} #}
-
-
-=======
 {{ form_start(form) }}
->>>>>>> master
 <div class = "row | my-4">
 
         <h3>Filtrer les sorties</h3>
@@ -216,7 +164,7 @@
                 {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->
                     <!-- Si etat = cree alors lien Modifier et lien = Publier -->
                     {% if s.etat.libelle == "Créée" %}
-                        <a href={{ path('modifier', {'id':s.id} )}}>Modifier</a>
+                        <a href={{ path('modifier_sortir', {'id':s.id} )}}>Modifier</a>
                         <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
                     <!-- Sinon lien Afficher -->
                     {% else %}
