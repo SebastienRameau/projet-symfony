@@ -6,8 +6,8 @@
 
 <div class="text-center | my-4">
 
-    <h2 class="text-center">Annuler une sortie</h2>
-
+    <h2 class="text-primary text-center">Annuler une sortie</h2>
+    <div class="my-4"> 
         <label>Nom de la sortie : </label><h4 class="text-center">{{list_sortie . nom}}</h4>
 
         <label>Date de la sortie : </label><h4 class="text-center">{{ list_sortie. dateHeureDebut | date('d/m/Y') }} </h4>
@@ -15,16 +15,20 @@
         <label>Campus : </label><h4 class="text-center">{{ list_sortie.campus.nom  }} </h4>
 
         <label>Lieu :</label><h4 class="text-center">{{ list_sortie.lieu.rue }}  {{ list_sortie.lieu.ville.nom }} {{ list_sortie.lieu.ville .codePostal }}</h4>
+    </div>
 
         {{ form_start(formular)}}
-
-        {{ form_widget(formular)}}
-    
+        <div>
+        {{ form_label(formular.infosSortie)}}
+        </div>
+        <div>
+        {{ form_widget(formular.infosSortie)}}
+        </div>
         
         
     <div class="text-center | my-4">
 
-        <button type="submit" class="btn btn-success">Enregister</button>
+        <button type="submit" class="btn btn-primary text-light">Enregister</button>
 
         <a href= {{path('accueil')}} class="btn btn-secondary">Annuler</a>
 

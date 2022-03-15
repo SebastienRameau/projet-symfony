@@ -57,7 +57,8 @@ class ModifierProfilType extends AbstractType
             
             //Ajouter la liste déroulante des campus présents en BDD
              ->add('campus', EntityType::class, [
-                'mapped' => false,
+                // ne pas le décommenter car sinon n'envoit pas en BDD
+                // 'mapped' => false,
                 'class' => Campus::class,
                 'choice_label' => 'nom',
                 'placeholder' => '-- Choisir --',
@@ -68,17 +69,15 @@ class ModifierProfilType extends AbstractType
             ->add('photoFilename', FileType::class, [
                     'mapped' => false,
                     'label' => 'Ma photo :',
-                    //changer le nom du bouton pour upload l'image
-                    // 'name' => 'Télécharger vers le serveur',
                     'required' => false,
                     'constraints' => [
                         new Image([
                             'maxSize' => '1024k',
                             //en commentaire car génère une erreur même si le type est bon
-                            // 'mimeTypes' => [
-                            //     'image/jpg',
-                            //     'image/png',
-                            // ],
+                            'mimeTypes' => [
+                                'image/jpg',
+                                'image/png',
+                            ],
                             //permet ici de mettre un message quand la photo ne correspond pas au format souhaité
                             'mimeTypesMessage' => 'Veuillez charger une photo valide',
                         ]),
