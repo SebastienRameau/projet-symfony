@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}{{parent () }}{% endblock %}
 
 {% block main %}
 
@@ -12,13 +12,14 @@
     <strong>{{date_jour}}</strong>
     <br>
     <!-- Affichage du participant connecté -->
-    <strong>{{participant_connecte.prenom}} {{participant_connecte.nom}}</strong> <!-- temporaire -->
+    <h4 class='text-primary'>{{participant_connecte.prenom}} {{participant_connecte.nom}}</h4> 
 </div>
 
-
+{{ form_start(form) }}
 <div class = "row | my-4">
 
-    {{form_start(form)}}
+        <h3>Filtrer les sorties</h3>
+
 
         <div class = "col-sm-4">
             
@@ -94,13 +95,21 @@
                 </p> 
         </div>
 
+    
+
         <div>
 
-            <button class="btn btn-primary">Rechercher</button>
+
+        <button class="btn btn-primary text-light">Rechercher</button>
 
         </div>
-    {{form_end(form)}}
-</div>
+
+     
+
+    </div>
+
+
+   
 
     {% for flashMessage in app.session.flashbag.get('notice') %}
     <div class="alert alert-success">
@@ -109,16 +118,16 @@
     {% endfor %}
 
 </div>
-
+{{ form_end(form) }}
 
 <!-- Tableau de sortie -->
 
-  <div style="height: 500px; overflow: scroll;">   
+  <div style="height: 500px; width:1180px; overflow: scroll;">   
 
 
-  <table class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped table-hover">
     
-    <thead class="fixed">
+    <thead class="fixed table-primary text-center">
         <tr>
             <th>Numero</th>
             <th>Nom de la sortie</th>
@@ -188,8 +197,9 @@
 </table>
 </div>
 
+<div class= "my-4">
 <!-- Bouton création de sortie -->
-<a href= {{path('creer_sortie')}} class="btn btn-secondary">Créer une sortie</a>
-
+<a href= {{path('creer_sortie')}} class="btn btn-primary text-light">Créer une sortie</a>
+</div>
 
 {% endblock %}
