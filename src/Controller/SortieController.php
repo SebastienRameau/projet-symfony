@@ -47,7 +47,6 @@ class SortieController extends AbstractController
         //Envoyer le participant connecté
         $participantConnecte = $this->getUser();
 
-
         //Envoyer la liste des campus
         $campusListe = $repoCampus->findAll();
 
