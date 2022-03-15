@@ -104,6 +104,16 @@ class SortieController extends AbstractController
      */
     public function publierSortie(Sortie $sortie, EtatRepository $etatRepo, EntityManagerInterface $em): Response
     {
+        //Contrôle de l'identité de l'organisateur
+        $participantConnecte = $this->getUser();
+        if ($sortie->getOrganisateur() != $participantConnecte) {
+            $this->addFlash(
+                'notice',
+                'Vous n\'êtes pas autorisé à publier cette sortie !'
+            );
+            return $this->redirectToRoute('accueil');
+        }
+
         $sortie->setEtat($etatRepo->findOneBy(['libelle' => 'Ouverte']));
 
         $this->addFlash(
@@ -171,6 +181,15 @@ class SortieController extends AbstractController
      */
     public function annuler_sortir(Sortie $sortie, EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
     {
+        //Contrôle de l'identité de l'organisateur
+        $participantConnecte = $this->getUser();
+        if ($sortie->getOrganisateur() != $participantConnecte) {
+            $this->addFlash(
+                'notice',
+                'Vous n\'êtes pas autorisé à annuler cette sortie !'
+            );
+            return $this->redirectToRoute('accueil');
+        }
 
         $form = $this->createForm(AnnulerFormType::class, $sortie);
 
@@ -208,6 +227,15 @@ class SortieController extends AbstractController
      */
     public function modifier_sortir(Sortie $sortie, EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
     {
+        //Contrôle de l'identité de l'organisateur
+        $participantConnecte = $this->getUser();
+        if ($sortie->getOrganisateur() != $participantConnecte) {
+            $this->addFlash(
+                'notice',
+                'Vous n\'êtes pas autorisé à modifier cette sortie !'
+            );
+            return $this->redirectToRoute('accueil');
+        }
 
         $form = $this->createForm(ModifierSortieType::class, $sortie);
 
