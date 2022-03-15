@@ -4,8 +4,9 @@
 
 {% block main %}
 
-    <h2 class="text-center">Créer une sortie</h2>
+    <h2 class="text-center text-primary">Créer une sortie</h2>
 
+{{ form_start(formular)}}  
 <div class="container">  
 
 
@@ -22,7 +23,6 @@
 
     <div class="row | my-5">
 
-        {{ form_start(formular)}}  
 
         <div class="col-sm-2">
             
@@ -119,20 +119,19 @@
 
     </div>
 
-    <div>
+    <div class= "my-4 text-center">
 
         {{ form_widget(formular.enregistrer) }}
-
+        &nbsp &nbsp &nbsp
         {{ form_widget(formular.publier) }}
-
-        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+        &nbsp &nbsp &nbsp
+        <button href= {{path('accueil')}}>Retour</button>
 
     </div>
 
-    {{ form_end(formular)}} 
-
-
+    
 </div>
 
+{{ form_end(formular)}} 
 
 {% endblock %}

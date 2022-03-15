@@ -21,6 +21,7 @@ class ModifierProfilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
             ->add('pseudo', null,[
                 'attr' => [
                     'required' => false
@@ -54,6 +55,7 @@ class ModifierProfilType extends AbstractType
                     'mapped' => false,
             ]
             )
+
             
             //Ajouter la liste déroulante des campus présents en BDD
              ->add('campus', EntityType::class, [
@@ -75,8 +77,9 @@ class ModifierProfilType extends AbstractType
                             'maxSize' => '1024k',
                             //en commentaire car génère une erreur même si le type est bon
                             'mimeTypes' => [
-                                'image/jpg',
-                                'image/png',
+                                'img/jpg',
+                                'img/png',
+
                             ],
                             //permet ici de mettre un message quand la photo ne correspond pas au format souhaité
                             'mimeTypesMessage' => 'Veuillez charger une photo valide',

@@ -6,10 +6,24 @@
 
 <div class="col-12 text-center">
     
+
+    <h2 class="text-center text-primary">Mon profil</h2>
+
+        <!-- Formulaire de filtrage -->
+       
+
+    
+
+
+
+         {# <img src="{{ asset('img/photoFilename')}}">
+
+
     <h2 class="text-center">Mon profil</h2>
 
     {# tentative pour afficher la photo chargée #}
        <img src="{{ asset('photoFilename')}}">
+
 
        <!-- Formulaire de filtrage -->
         {{ form_start(formModifierParticipant) }}
@@ -19,6 +33,67 @@
             {# pour hasher le password #}
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('formModifierParticipant.password') }}">
 
+
+       {# {{ form_end(formModifierParticipant) }} #}
+
+    <div class="container">
+         {{ form_start(formModifierParticipant) }}
+        <div class="col-sm | my-5">
+        
+            <div class="row text-dark">
+
+                <p> {{ form_label(formModifierParticipant.pseudo) }}  {{ form_widget(formModifierParticipant.pseudo) }} </p>
+
+            </div> 
+        </div> 
+
+            <div>
+                <p> {{ form_label(formModifierParticipant.nom) }} {{ form_widget(formModifierParticipant.nom) }} </p>
+
+
+                <p> {{ form_label(formModifierParticipant.prenom) }} </p>
+                <p> {{ form_label(formModifierParticipant.telephone) }} </p>
+                <p>{{ form_label(formModifierParticipant.mail) }}</p>
+
+
+                <p> {{ form_label(formModifierParticipant.password.first) }}</p>
+                <p> {{ form_label(formModifierParticipant.password.second ) }}</p> 
+                
+                <p>{{ form_label(formModifierParticipant.campus) }}</p>
+
+                <p>{{ form_label(formModifierParticipant.photoFilename) }}</p>
+                
+
+            </div>
+
+            <div class="row">
+
+                {# <p>{{ form_widget(formModifierParticipant.pseudo) }} </p> #}
+                
+                <p> {{ form_widget(formModifierParticipant.prenom) }} </p>
+                <p> {{ form_widget(formModifierParticipant.telephone) }} </p>
+                <p> {{ form_widget(formModifierParticipant.mail) }}</p>
+
+
+                <p> {{form_widget(formModifierParticipant.password.first)}} </p>
+                <p> {{ form_widget(formModifierParticipant.password.second) }} </p>
+             
+
+                <p> {{ form_widget(formModifierParticipant.campus) }} </p>
+
+                <p> {{ form_widget(formModifierParticipant.photoFilename) }} </p>
+                
+            </div> 
+
+            <div>
+                <a href="{{ participant.photoFilename }}"></a>
+                <div>
+                    <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+                </div>
+            </div>
+        </div>
+
             <div>
                 {# le bouton enregistrer qui envoie les données en BDD, et qui doit renvoyer vers la page d'accueil #}
                 <button type="submit" method="POST" class="btn btn-secondary" href={{ path('accueil') }} >Enregistrer</button>
@@ -27,7 +102,9 @@
                 <a href="{{ path('accueil' )}}" class="btn btn-secondary">Retour</a>
             </div>
 
+
         {{ form_end(formModifierParticipant) }}
+    </div>
             
 </div>
 

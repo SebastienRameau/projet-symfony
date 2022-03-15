@@ -146,7 +146,7 @@ class SortieController extends AbstractController
             if ($formular->getClickedButton() === $formular->get('enregistrer')) { // getClickedButton fonctionne malgré le soulignement rouge.
                 $nouvelleSortie->setEtat($etatRepo->findOneBy(['libelle' => 'Créée']));
                 $this->addFlash(
-                    'creation',
+                    'notice',
                     'La sortie a été enregistrée comme "en cours de création"'
                 );
             }
@@ -154,7 +154,7 @@ class SortieController extends AbstractController
             if ($formular->getClickedButton() === $formular->get('publier')) {
                 $nouvelleSortie->setEtat($etatRepo->findOneBy(['libelle' => 'Ouverte']));
                 $this->addFlash(
-                    'creation',
+                    'notice',
                     'La sortie a été créée et publiée'
                 );
             }
