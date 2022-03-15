@@ -60,7 +60,7 @@ class ModifierProfilType extends AbstractType
                 'mapped' => false,
                 'class' => Campus::class,
                 'choice_label' => 'nom',
-                'placeholder' => '-- Choisir --',
+                // 'placeholder' => '-- Choisir --',
                 'required' => false,
             ])
             
@@ -69,7 +69,7 @@ class ModifierProfilType extends AbstractType
                     'mapped' => false,
                     'label' => 'Ma photo :',
                     //changer le nom du bouton pour upload l'image
-                    // 'name' => 'Télécharger vers le serveur',
+                        // 'placeholder' => 'Télécharger vers le serveur',
                     'required' => false,
                     'constraints' => [
                         new Image([
