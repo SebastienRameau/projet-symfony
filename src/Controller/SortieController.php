@@ -23,8 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-
+use Symfony\Component\Security\Core\Security;
 
 class SortieController extends AbstractController
 {
@@ -68,8 +67,17 @@ class SortieController extends AbstractController
             ]);
         }
 
-
+        //Pour que les données affichées lors du premier chargement de la page correspondent à ce qui est attendu dans la maquette,
+        //on set les attributs nécessaires de $filtreSorties. La cohérence avec la vue sera fait en JS (je suppose).
+        $filtreSorties->setIsOrganisateur(true)->setIsInscrit(true)->setIsNonInscrit(true)
+            //Note : le getCampus seul renvoie un campus sans nom, avec juste un id ;
+            //peut-être parce que participantConnecte a été hydratée en tant que User et pas en tant que Participant ?
+            ->setCampus($repoCampus->findOneBy(['id' => $participantConnecte->getCampus()->getId()]));
+        
         $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte, $dateJour);
+
+        //Réinitialise filtreSorties, pour que ses champ soient vides avant de valider le formulaire
+        $filtreSorties = new FiltreSorties();
 
         return $this->render('sortie/accueil.html.twig', [
             'date_jour' => $dateJour,
@@ -91,6 +99,24 @@ class SortieController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/publier/{id}", name="publier_sortie")
+     */
+    public function publierSortie(Sortie $sortie, EtatRepository $etatRepo, EntityManagerInterface $em): Response
+    {
+        $sortie->setEtat($etatRepo->findOneBy(['libelle' => 'Ouverte']));
+
+        $this->addFlash(
+            'notice',
+            'La sortie a été publiée'
+        );
+
+        $em->persist($sortie);
+        $em->flush();
+
+        return $this->redirectToRoute('accueil');
+    }    
+
 
     /**
      * @Route("/creer", name="creer_sortie")
@@ -101,13 +127,13 @@ class SortieController extends AbstractController
 
         $nouvelleSortie = new Sortie();
 
-        $formular = $this->createForm(CreerSortieType::class,$nouvelleSortie);
+        $formular = $this->createForm(CreerSortieType::class, $nouvelleSortie);
 
         $formular->handleRequest($request);
 
         if ($formular->isSubmitted() && $formular->isValid()) {
             //Si on a cliqué sur Enregistrer, la sortie est créée avec l'état "Créée" (donc, non publiées)
-            if ($formular->getClickedButton() === $formular->get('enregistrer')) {
+            if ($formular->getClickedButton() === $formular->get('enregistrer')) { // getClickedButton fonctionne malgré le soulignement rouge.
                 $nouvelleSortie->setEtat($etatRepo->findOneBy(['libelle' => 'Créée']));
                 $this->addFlash(
                     'creation',
@@ -155,7 +181,8 @@ class SortieController extends AbstractController
 
             $this->addFlash(
                 'notice',
-                'Vous avez deja annule une sortie');
+                'Vous avez deja annule une sortie'
+            );
 
 
             $etat = $etatRepo->findOneBy(['libelle' => 'Annulée']);
@@ -179,34 +206,33 @@ class SortieController extends AbstractController
     /**
      * @Route("/modifier/{id}", name="modifier_sortir")
      */
-    public function modifier_sortir(Sortie $sortie,EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
+    public function modifier_sortir(Sortie $sortie, EtatRepository $etatRepo, Request $rq, EntityManagerInterface $emi): Response
     {
 
-        $form = $this->createForm(ModifierSortieType::class,$sortie);
+        $form = $this->createForm(ModifierSortieType::class, $sortie);
 
         $form->handleRequest($rq);
 
 
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
 
-              
-                $emi->flush();
-                return $this->redirectToRoute('accueil');
 
-            }
-            
-            $this->addFlash(
-                'notice',
-                ' Vous avez deja modifie une sortie'
+            $emi->flush();
+            return $this->redirectToRoute('accueil');
+        }
 
-            );
+        $this->addFlash(
+            'notice',
+            ' Vous avez deja modifie une sortie'
 
-    
+        );
+
+
         return $this->render('sortie/modifiersortie.html.twig', [
 
-            'formular'=> $form->createView(),
-            'list_sortie'=> $sortie
-            
+            'formular' => $form->createView(),
+            'list_sortie' => $sortie
+
         ]);
     }
 
@@ -217,51 +243,44 @@ class SortieController extends AbstractController
     public function inscrire(Sortie $sortie, EntityManagerInterface $emi): Response
     {
 
-    $participantConnecte = $this->getUser();
+        $participantConnecte = $this->getUser();
 
-    $sortie->addParticipant($participantConnecte);
+        $sortie->addParticipant($participantConnecte);
 
-    $emi -> flush();
+        $emi->flush();
 
-    $this->addFlash(
-        'notice',
-        'Vous avez incsrire une sortie');
-
-
-
-
-        return $this->redirectToRoute('accueil'); 
+        $this->addFlash(
+            'notice',
+            'Vous avez incsrire une sortie'
+        );
 
 
-        }
 
-        /**
+
+        return $this->redirectToRoute('accueil');
+    }
+
+    /**
      * @Route("/desister/{id}", name="desister")
      */
     public function desister(Sortie $sortie, EntityManagerInterface $emi): Response
     {
 
-    $participantConnecte = $this->getUser();
+        $participantConnecte = $this->getUser();
 
-    $sortie->removeParticipant($participantConnecte);
-
-
-    $emi -> flush();
-
-    $this->addFlash(
-        'notice',
-        'Vous avez desiste une sortie');
+        $sortie->removeParticipant($participantConnecte);
 
 
+        $emi->flush();
 
-
-        return $this->redirectToRoute('accueil'); 
-
-
-        }
+        $this->addFlash(
+            'notice',
+            'Vous avez desiste une sortie'
+        );
 
 
 
 
-
+        return $this->redirectToRoute('accueil');
+    }
 }
