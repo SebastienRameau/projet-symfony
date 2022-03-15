@@ -7,53 +7,87 @@
 <div class="col-12 text-center">
 
     
-    <h2 class="text-center">Mon profil</h2>
-        <!-- Formulaire de filtrage -->
-        {{ form_start(formModifierParticipant) }}
+    <h2 class="text-center text-primary">Mon profil</h2>
 
+        <!-- Formulaire de filtrage -->
+       
+
+    
+
+
+
+         {# <img src="{{ asset('img/photoFilename')}}">
+
+       <!-- Formulaire de filtrage -->
+        {{ form_start(formModifierParticipant) }}
+            
             <h4 class="text-center">{{ form_widget(formModifierParticipant) }}</h4>
             
-            {# changer le label du password "Mot de passe" #}
-
-            {# changer le label du password "Confirmation" #}
-
-            {# changer la value du bouton Ma photo "Télécharger vers le serveur" #}
-
-            {# décocher la ligne en dessous pour voir l'erreur généré #}
-            {# {{ form_widget(formModifierParticipant.photoFilename, { 'label': 'Click me' }) }} #}
+            {# pour hasher le password #}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('formModifierParticipant.password') }}">
 
 
-            {# <div>
-            {{ form_row(formModifierParticipant) }}
-                <div>
-                    {{ form_label(formModifierParticipant.password.first_options, "Mot de passe") }}
-                    {{ form_label(formModifierParticipant.password.second_options, "Confirmation") }}
-                </div>
-            </div> #}
-                {# {{ form_row(formModifierParticipant) }}
-                    <p>{{ form_label(formModifierParticipant.pseudo, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.prenom, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.telephone, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.mail, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.password, "Confirmation") }}</p>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <p>{{ form_label(formModifierParticipant.campus, "Confirmation") }}</p>
-                    <p>{{ form_label(formModifierParticipant.photoFilename, "Confirmation") }}</p> #}
-                    {# {{ form_row(form.password.primary) }}
-                    {{ form_row(form.password.secondary) }} #}
-                    {# {{ form_label(form.password, 
-                        'first_options' => array['label' => 'Mot de passe'] 
-                        'second_options' => array['label' => 'Confirmation'])
-                    }} #}
-                    {# {{ form_label(form.password, {'label' : 'Confirmation'}) }} #}
-                    {# {{ form_row(form.photoFilename) }} #}
+       {# {{ form_end(formModifierParticipant) }} #}
+
+    <div class="container">
+         {{ form_start(formModifierParticipant) }}
+        <div class="col-sm | my-5">
+        
+            <div class="row text-dark">
+
+                <p> {{ form_label(formModifierParticipant.pseudo) }}  {{ form_widget(formModifierParticipant.pseudo) }} </p>
+
+            </div> 
+        </div> 
+
+            <div>
+                <p> {{ form_label(formModifierParticipant.nom) }} {{ form_widget(formModifierParticipant.nom) }} </p>
+
+
+                <p> {{ form_label(formModifierParticipant.prenom) }} </p>
+                <p> {{ form_label(formModifierParticipant.telephone) }} </p>
+                <p>{{ form_label(formModifierParticipant.mail) }}</p>
+
+
+                <p> {{ form_label(formModifierParticipant.password.first) }}</p>
+                <p> {{ form_label(formModifierParticipant.password.second ) }}</p> 
+                
+                <p>{{ form_label(formModifierParticipant.campus) }}</p>
+
+                <p>{{ form_label(formModifierParticipant.photoFilename) }}</p>
+                
+
+            </div>
+
+            <div class="row">
+
+                {# <p>{{ form_widget(formModifierParticipant.pseudo) }} </p> #}
+                
+                <p> {{ form_widget(formModifierParticipant.prenom) }} </p>
+                <p> {{ form_widget(formModifierParticipant.telephone) }} </p>
+                <p> {{ form_widget(formModifierParticipant.mail) }}</p>
+
+
+                <p> {{form_widget(formModifierParticipant.password.first)}} </p>
+                <p> {{ form_widget(formModifierParticipant.password.second) }} </p>
+             
+
+                <p> {{ form_widget(formModifierParticipant.campus) }} </p>
+
+                <p> {{ form_widget(formModifierParticipant.photoFilename) }} </p>
+                
+            </div> 
+
+            <div>
                 <a href="{{ participant.photoFilename }}"></a>
                 <div>
                     <button type="submit" class="btn btn-secondary">Enregistrer</button>
                     <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
                 </div>
-
+            </div>
+        </div>
         {{ form_end(formModifierParticipant) }}
+    </div>
             
 </div>
 

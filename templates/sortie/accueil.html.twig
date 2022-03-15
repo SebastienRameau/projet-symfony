@@ -4,8 +4,6 @@
 
 {% block main %}
 
-<div class="container"> 
-
 <div>
 
     <!-- Affichage de la date du jour -->
@@ -15,12 +13,13 @@
     <h4 class='text-primary'>{{participant_connecte.prenom}} {{participant_connecte.nom}}</h4> 
 </div>
 
+
 {{ form_start(form) }}
 <div class = "row | my-4">
 
         <h3>Filtrer les sorties</h3>
 
-        <div class = "col-sm-4">
+        <div class = "col-sm-4 | py-1 my-4">
             
                 <p>
                     {{form_label(form.campus)}}
@@ -58,7 +57,7 @@
         </div>
 
 
-        <div class="col-sm-5">
+        <div class="col-sm-5 | py-1 my-4">
 
                 <p>
                 {{ form_widget(form.campus)}} 
@@ -107,13 +106,14 @@
     </div>
 
    
-
+    <div>
     {% for flashMessage in app.session.flashbag.get('notice') %}
     <div class="alert alert-success">
     {{ flashMessage }}
     </div> 
     {% endfor %}
-
+    </div>
+    
 </div>
 {{ form_end(form) }}
 

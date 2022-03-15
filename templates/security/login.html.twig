@@ -16,25 +16,53 @@
     {% endif %}
 
     <h1 class="h3 mb-3 font-weight-normal">Connectez-vous!</h1>
-    
-    
-    <div>
+
+    <div class="container">
+        <div class = "row | my-4">
+
+        <div class="col-sm-6">
+
+        <p>
+
         <label for="inputPseudo">Pseudo</label>
         <input type="text" value="{{ last_username }}" name="pseudo" id="inputPseudo" class="form-control" autocomplete="username" required autofocus>
+        </p>
+
+        <p>
         <label for="inputPassword">Mot de passe</label>
         <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
+        </p>
 
-        <label>
-            <input type="checkbox" name="_remember_me" checked/>
-            Se souvenir de moi
-        </label>
+        <p>
+        <div class = "row | my-4">
+            <div class="col-sm-4">
 
+        <p>
         <button class="btn btn-lg btn-primary" type="submit">
         Connexion
         </button>
+        </p>
+
+            </div>
+
+            <div class="col-sm-5">
+        
+        <label>
+            <input type="checkbox" name="_remember_me" checked/> Se souvenir de moi
+        </label>
+        <br>
+        <a href="#">Mot de passe oublié</a>
+
+            </div>
+
+        </div>
+        </p>
+
+        </div>
+        </div>
     </div>
     
 </form>

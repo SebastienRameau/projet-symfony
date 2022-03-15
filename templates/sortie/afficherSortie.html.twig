@@ -1,56 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}{{parent() }}{% endblock %}
 
 {% block main %}
 <div class="container"> 
 
-<h1>Afficher une sortie</h1>
+    <h2 class="text-center text-primary">Afficher une sortie</h2>
 
-<div>
-    <div class="col-sm-2">
-        <p>Nom de la sortie : </p>
-        <p>Date et heure de la sortie : </p>
-        <p>Date limite d'inscription : </p>
-        <p>Nombre de places : </p>
-        <p>Durée : </p>
-        <p>Description et infos : </p>
+
+    <div class="row | my-5">
+
+        <div class="col-sm-3">
+            <p>Nom de la sortie : </p>
+            <p>Date et heure de la sortie : </p>
+            <p>Date limite d'inscription : </p>
+            <p>Nombre de places : </p>
+            <p>Durée : </p>
+            <p>Description et infos : </p>
+
+        </div>
+        <div class="col-sm-4 text-dark ">
+            <p>{{sortie.nom}}</p>
+            <p>{{sortie.dateHeureDebut|date('Y-m-d h:i')}}</p>
+            <p>{{sortie.dateLimiteInscription|date('Y-m-d')}}</p>
+                {% set size = sortie.participants|length %}
+            <p>{{size}}/{{sortie.nbInscriptionMax}}</p>
+            <p>{{sortie.duree}} minutes</p>
+            <p>{{sortie.infosSortie}}</p>
+        </div>
+        <div class="col-sm-2">
+            <p>Campus : </p>
+            <p>Lieu : </p>
+            <p>Rue : </p>
+            <p>Ville : </p>
+            <p>Code postal : </p>
+            <p>Latitude : </p>
+            <p>Longitude : </p>
+
+        </div>
+        <div class="col-sm-3 text-dark">
+            <p>{{sortie.campus.nom}}</p>
+            <p>{{sortie.lieu.nom}}</p>
+            <p>{{sortie.lieu.rue}}</p>
+            <p>{{sortie.lieu.ville.nom}}</p>
+            <p>{{sortie.lieu.ville.codePostal}}</p>
+            <p>{{sortie.lieu.latitude}}</p>
+            <p>{{sortie.lieu.longitude}}</p>
+
+        </div>
+
     </div>
-    <div class="col-sm-5">
-        <p>{{sortie.nom}}</p>
-        <p>{{sortie.dateHeureDebut|date('Y-m-d h:i')}}</p>
-        <p>{{sortie.dateLimiteInscription|date('Y-m-d')}}</p>
-        {% set size = sortie.participants|length %}
-        <p>{{size}}/{{sortie.nbInscriptionMax}}</p>
-        <p>{{sortie.duree}} minutes</p>
-        <p>{{sortie.infosSortie}}</p>
-    </div>
-    <div>
-        <p>Campus : </p>
-        <p>Lieu : </p>
-        <p>Rue : </p>
-        <p>Ville : </p>
-        <p>Code postal : </p>
-        <p>Latitude : </p>
-        <p>Longitude : </p>
-    </div>
-    <div>
-        <p>{{sortie.campus.nom}}</p>
-        <p>{{sortie.lieu.nom}}</p>
-        <p>{{sortie.lieu.rue}}</p>
-        <p>{{sortie.lieu.ville.nom}}</p>
-        <p>{{sortie.lieu.ville.codePostal}}</p>
-        <p>{{sortie.lieu.latitude}}</p>
-        <p>{{sortie.lieu.longitude}}</p>
-    </div>
+
 </div>
 
-<div style="height: 500px; overflow: scroll;"> 
+<h4>Liste des participants inscrits</h4>
+
+<div style="height: 300px; width:600px; overflow: scroll;"> 
 
     <table class="table table-bordered table-striped">
 
-    <thead>
+    <thead class="table-primary text-center">
         <tr>
+            <th>No</th>
             <th>Pseudo</th>
             <th>Nom</th>
         </tr>
@@ -59,6 +70,7 @@
     <tbody>
         {% for p in sortie.participants %}
         <tr>
+            <td>{{loop.index}}</td>
             <td>
                 {{p.Pseudo}}
             </td>
