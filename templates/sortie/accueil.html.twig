@@ -94,19 +94,13 @@
                 </p> 
         </div>
 
-    
-
         <div>
 
         <button class="btn btn-primary text-light">Rechercher</button>
 
         </div>
 
-     
-
     </div>
-
-   
 
     {% for flashMessage in app.session.flashbag.get('notice') %}
     <div class="alert alert-success">
@@ -118,7 +112,6 @@
 {{ form_end(form) }}
 
 <!-- Tableau de sortie -->
-    <!-- TODO : rajouter une barre de scroll avec Bootstrap -> OK Binh l'a fait -->
 
   <div style="height: 500px; width:1180px; overflow: scroll;">   
 
@@ -143,8 +136,8 @@
         <tr>
             <td>{{ loop.index }}</td>
             <td>{{s.nom}}</td>
-            <td>{{s.dateHeureDebut|date('Y-m-d h:i')}}</td>
-            <td>{{s.dateLimiteInscription|date('Y-m-d')}}</td>
+            <td>{{s.dateHeureDebut|date('d-m-Y h:i')}}</td>
+            <td>{{s.dateLimiteInscription|date('d-m-Y')}}</td>
             {% set size = s.participants|length %}
             <td>{{size}}/{{s.nbInscriptionMax}}</td>
             <td>{{s.etat.libelle}}</td>
@@ -165,19 +158,21 @@
                     <!-- Si etat = cree alors lien Modifier et lien = Publier -->
                     {% if s.etat.libelle == "Créée" %}
                         <a href={{ path('modifier_sortir', {'id':s.id} )}}>Modifier</a>
-                        <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
+
+                        <a href="{{ path('publier_sortie',{id:s.id})}}">Publier</a>
+
                     <!-- Sinon lien Afficher -->
                     {% else %}
                         <a href="{{ path('afficher_sortie',{id:s.id})}}">Afficher</a>
-                        <!-- et Si dateDebut < now lien Annuler -->
-                        {% if s.dateHeureDebut > date_jour %}
+                        <!-- et Si dateDebut < now ET état différent de Annulée alors lien Annuler -->
+                        {% if s.dateHeureDebut > date_jour and s.etat.libelle != "Annulée" %}
                             <a href={{ path('annuler_sortir',{'id': s.id} )}}>Annuler</a>
                         {% endif %}
                     {% endif %}
                 <!-- Sinon -->
                 {% else %}
                     <!-- lien Afficher -->
-                    <a href="{{ path('afficher_sortie',{id:s.id})}}">Afficher</a>
+                    <a href="{{ path('afficher_sortie', {id:s.id})}}">Afficher</a>
                     <!-- Si (etat = Ouverte ou etat = Cloturee) et inscrit = true et dateDebut < now alors lien Se désister-->
                     {% if (s.etat.libelle == "Ouverte" or s.etat.libelle == "Cloturée") and
                      (participant_connecte in s.participants) and 
