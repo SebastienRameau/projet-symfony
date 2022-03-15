@@ -122,7 +122,7 @@
 
         <button type="submit" class="btn btn-primary text-light">Enregister</button>
         &nbsp &nbsp
-        <a href= {{path('accueil')}} class="btn btn-primary text-light">Publier la sortie</a>
+        <a href= {{path('publier_sortie',{'id':list_sortie.id} )}} class="btn btn-primary text-light">Publier la sortie</a>
         &nbsp &nbsp
         <a href= {{path('annuler_sortir',{'id':list_sortie.id} )}} class="btn btn-secondary text-light">Supprimer la sortie</a>
         &nbsp &nbsp
