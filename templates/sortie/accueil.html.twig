@@ -15,56 +15,10 @@
     <strong>{{participant_connecte.prenom}} {{participant_connecte.nom}}</strong> <!-- temporaire -->
 </div>
 
-<div class="row | my-5">
-    {{ form_start(form) }}
-    <h3>Filtrer les sorties</h3>
-    <div class="col-sm-2">
-        <p>
-            {{form_label(form.campus)}}
-            {{form_widget(form.campus)}}
-        </p>
-        <p>
-            {{form_label(form.nom)}}
-            {{form_widget(form.nom)}}
-        </p>
-        <p>
-            {{form_label(form.dateMin)}}
-            {{form_widget(form.dateMin)}}
-            {{form_label(form.dateMax)}}
-            {{form_widget(form.dateMax)}}
-        </p>
-    </div>
-    <div class="col-sm-5">
-        <p>
-            {{form_widget(form.isOrganisateur)}}
-            {{form_label(form.isOrganisateur)}}
-        </p>
-        <p>
-            {{form_widget(form.isInscrit)}}
-            {{form_label(form.isInscrit)}}
-        </p>
-        <p>
-            {{form_widget(form.isNonInscrit)}}
-            {{form_label(form.isNonInscrit)}}
-        </p>
-        <p>
-            {{form_widget(form.isPassee)}}
-            {{form_label(form.isPassee)}}
-        </p>
-    </div>
-    <div class="col-sm-5">
-        <button class="btn btn-primary">
-        Rechercher
-        </button>
-    </div>
-
-
-    {{ form_end(form) }}
-
-</div> #}
-
 
 <div class = "row | my-4">
+
+    {{form_start(form)}}
 
         <div class = "col-sm-4">
             
@@ -142,11 +96,11 @@
 
         <div>
 
-        <button class="btn btn-primary">Rechercher</button>
+            <button class="btn btn-primary">Rechercher</button>
 
         </div>
-
-    </div>
+    {{form_end(form)}}
+</div>
 
     {% for flashMessage in app.session.flashbag.get('notice') %}
     <div class="alert alert-success">
@@ -158,7 +112,6 @@
 
 
 <!-- Tableau de sortie -->
-    <!-- TODO : rajouter une barre de scroll avec Bootstrap -> OK Binh l'a fait -->
 
   <div style="height: 500px; overflow: scroll;">   
 
@@ -204,7 +157,7 @@
                 {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->
                     <!-- Si etat = cree alors lien Modifier et lien = Publier -->
                     {% if s.etat.libelle == "Créée" %}
-                        <a href={{ path('modifier', {'id':s.id} )}}>Modifier</a>
+                        <a href={{ path('modifier_sortir', {'id':s.id} )}}>Modifier</a>
                         <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
                     <!-- Sinon lien Afficher -->
                     {% else %}
@@ -217,7 +170,7 @@
                 <!-- Sinon -->
                 {% else %}
                     <!-- lien Afficher -->
-                    <a href="{{ path('afficher_sortie',{id:s.id})}}">Afficher</a>
+                    <a href="{{ path('afficher_sortie', {id:s.id})}}">Afficher</a>
                     <!-- Si (etat = Ouverte ou etat = Cloturee) et inscrit = true et dateDebut < now alors lien Se désister-->
                     {% if (s.etat.libelle == "Ouverte" or s.etat.libelle == "Cloturée") and
                      (participant_connecte in s.participants) and 
