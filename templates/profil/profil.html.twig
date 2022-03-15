@@ -6,7 +6,9 @@
 
 <div class="col-12 text-center">
 
-    <h2 class="text-center">{{ list_participant.pseudo }}</h2>
+    <h2 class="text-center text-primary">{{ list_participant.pseudo }}</h2>
+
+    <div class="row | my-4">
 
         <label>Prenom :</label><h4 class="text-center">{{list_participant . prenom}}</h4>
 
@@ -17,8 +19,13 @@
         <label>Email :</label><h4 class="text-center">{{ list_participant . mail}}</h4>
 
         <label>Campus :</label><h4 class="text-center">{{ list_participant.campus.nom }} </h4>
-
-        <a href= {{path('accueil')}} class="btn btn-secondary">Retour</a>
+        
+        
+        <div class="my-4">
+        <br>
+        <a href= {{path('accueil')}} class="btn btn-primary text-light">Retour</a>
+        </div>
+    </div>
 </div>
 
 
