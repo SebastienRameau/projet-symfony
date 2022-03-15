@@ -164,7 +164,7 @@
                 {% if participant_connecte == s.organisateur %} <!-- TODO : mettre à jour tous les path vers les bonnes méthodes -->
                     <!-- Si etat = cree alors lien Modifier et lien = Publier -->
                     {% if s.etat.libelle == "Créée" %}
-                        <a href={{ path('modifier', {'id':s.id} )}}>Modifier</a>
+                        <a href={{ path('modifier_sortir', {'id':s.id} )}}>Modifier</a>
                         <a href="{{ path('accueil',{id:s.id})}}">Publier</a>
                     <!-- Sinon lien Afficher -->
                     {% else %}
