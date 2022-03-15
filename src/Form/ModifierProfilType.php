@@ -21,20 +21,37 @@ class ModifierProfilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo')
-            ->add('prenom')
-            ->add('nom')
-            ->add('telephone')
-            ->add('mail')
-            ->add('password', RepeatedType::class, [
+            ->add('pseudo', null,[
                 'attr' => [
+                    'required' => false
+                ]])
+            ->add('prenom', null,[
+                'attr' => [
+                    'required' => false
+                ]])
+            ->add('nom', null,[
+                'attr' => [
+                    'required' => false
+                ]])
+            ->add('telephone', null,[
+                'attr' => [
+                    'required' => false
+                ]])
+            ->add('mail', null,[
+                'attr' => [
+                    'required' => false
+                ]])
+
+            // permet ici d'appeler une première class RepeatedType qui va automatiquement mettre deux champs "First (mot de passe) et Second (confirmation)"
+            // on précise le type pour lui dire que ce sera la class PasswordType (permet de voir le mot de passe sous forme de points noirs)
+            ->add('password', RepeatedType::class, [
                     'type' => PasswordType::class,
-                    'invalid-message' => "Le mot de passe n'est pas identique",
+                    // 'invalid-message' => "Le mot de passe n'est pas identique",
                     'options' => ['attr' => ['class' => 'password-field']],
                     'required' => false,
                     'first_options' => array('label' => 'Mot de passe'),
                     'second_options' => array('label' => 'Confirmation'),
-                 ]
+                    'mapped' => false,
             ]
             )
             
@@ -49,21 +66,24 @@ class ModifierProfilType extends AbstractType
             
             //ajouter une photo (qui doit être enregistrer dans le dossier public/uploads pour les tests)    
             ->add('photoFilename', FileType::class, [
+                    'mapped' => false,
                     'label' => 'Ma photo :',
-                    // 'placeholder' => 'Télécharger vers le serveur',
+                    //changer le nom du bouton pour upload l'image
+                    // 'name' => 'Télécharger vers le serveur',
                     'required' => false,
                     'constraints' => [
                         new Image([
                             'maxSize' => '1024k',
-                            'mimeTypes' => [
-                                'image/jpg',
-                                'image/png',
-                            ],
-                            'mimeTypesMessage' => 'Veuillez charger un fichier valide',
+                            //en commentaire car génère une erreur même si le type est bon
+                            // 'mimeTypes' => [
+                            //     'image/jpg',
+                            //     'image/png',
+                            // ],
+                            //permet ici de mettre un message quand la photo ne correspond pas au format souhaité
+                            'mimeTypesMessage' => 'Veuillez charger une photo valide',
                         ]),
                     ]
             ])
-            
             ->getForm();
         ;
     }
