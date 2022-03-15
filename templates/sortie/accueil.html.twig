@@ -158,7 +158,9 @@
                     <!-- Si etat = cree alors lien Modifier et lien = Publier -->
                     {% if s.etat.libelle == "Créée" %}
                         <a href={{ path('modifier_sortir', {'id':s.id} )}}>Modifier</a>
+
                         <a href="{{ path('publier_sortie',{id:s.id})}}">Publier</a>
+
                     <!-- Sinon lien Afficher -->
                     {% else %}
                         <a href="{{ path('afficher_sortie',{id:s.id})}}">Afficher</a>

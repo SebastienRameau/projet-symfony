@@ -7,27 +7,21 @@
 <div class="col-12 text-center">
     
     <h2 class="text-center">Mon profil</h2>
-        <!-- Formulaire de filtrage -->
-        {{ form_start(formModifierParticipant) }}
 
+    {# tentative pour afficher la photo chargée #}
+       <img src="{{ asset('photoFilename')}}">
+
+       <!-- Formulaire de filtrage -->
+        {{ form_start(formModifierParticipant) }}
+            
             <h4 class="text-center">{{ form_widget(formModifierParticipant) }}</h4>
             
             {# pour hasher le password #}
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('formModifierParticipant.password') }}">
 
-            {# tentative changement de la valeur texte du bouton pour charger une image #}
-                {# {{ form_row(form.photoFilename) }} #}
-                {# {{ form_label(formModifierParticipant.photoFilename, "Confirmation") }} #}
-
-            {# tentative pour afficher la photo chargée #}
-                {# <a href="{{ participant.photoFilename }}"></a> #}
-                {# {{ formModifierParticipant.photoFilename }} #}
-
-            {# changer la value du bouton Ma photo "Télécharger vers le serveur" #}
-
             <div>
                 {# le bouton enregistrer qui envoie les données en BDD, et qui doit renvoyer vers la page d'accueil #}
-                <button type="submit" method="POST" class="btn btn-secondary" href="{{ path('accueil') }}" >Enregistrer</button>
+                <button type="submit" method="POST" class="btn btn-secondary" href={{ path('accueil') }} >Enregistrer</button>
 
                 {# le bouton retour, redirection page d'accueil sans modifier les informations du profil #}
                 <a href="{{ path('accueil' )}}" class="btn btn-secondary">Retour</a>

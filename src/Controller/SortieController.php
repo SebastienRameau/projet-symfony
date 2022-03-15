@@ -186,7 +186,7 @@ class SortieController extends AbstractController
 
 
             $etat = $etatRepo->findOneBy(['libelle' => 'Annulée']);
-
+                
             $sortie->setEtat($etat);
 
             $emi->flush();

@@ -48,7 +48,7 @@ class ProfilController extends AbstractController
         if ($formModifierParticipant->isSubmitted() && $formModifierParticipant->isValid()) {
             
             $password = $formModifierParticipant->get('password')->getData();
-            // à revoir car la bdd n'enregistre pas le changement de password
+            
             if ($password) {
                 //pour hasher le mot de passe
                 $this->getUser()->setPassword(
@@ -58,15 +58,19 @@ class ProfilController extends AbstractController
                     )
                     );
                 $password = $formModifierParticipant->getData();
+                
                 $entityManagerInterface->persist($this->getUser());
             }
 
             //changer de campus (en cours car la bdd n'enregistre pas le changement)
             // $campus = $formModifierParticipant->get('campus')->getData();
             // if ($campus) {
-            //     $this->getUser()->setCampus();
+            //     $this->getUser()->setCampus(
+            //         // $this->getUser(),
+            //         // $formModifierParticipant->get('campus')->getData()
+            //     );
 
-            //     $campus = $formModifierParticipant->get('campus')->getData();
+            //     $campus = $formModifierParticipant->getData();
             //     $entityManagerInterface->persist($this->getUser());
             // }
 
@@ -93,10 +97,20 @@ class ProfilController extends AbstractController
                 $entityManagerInterface->persist($this->getUser());
             
             }
+
             $entityManagerInterface->flush();
+            // pour afficher la photo sélectionnée
+            //'photo_filename' = $photoFilename;
+            $this->addFlash(
+                'notice',
+                'Vous avez modifié votre profil');
+
+            return $this->redirectToRoute('accueil');
+
         }
         return $this->renderForm('profil/monprofil.html.twig', [
             'formModifierParticipant' => $formModifierParticipant,
+            
         ]);
     }      
 }

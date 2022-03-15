@@ -63,7 +63,7 @@ class ModifierSortieType extends AbstractType
 
             ->add('infosSortie', TextareaType::class, [
                 'required' => false,
-                'attr' => array('rows' => '5','cols' => '40'),
+                'attr' => array('rows' => '5','cols' => '50'),
             ])
 
         //    ->add('participants')
