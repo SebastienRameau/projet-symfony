@@ -79,11 +79,11 @@ class ModifierProfilType extends AbstractType
                         new Image([
                             'maxSize' => '1024k',
                             //en commentaire car génère une erreur même si le type est bon
-                            'mimeTypes' => [
-                                'img/jpg',
-                                'img/png',
+                            // 'mimeTypes' => [
+                            //     'img/jpg',
+                            //     'img/png',
 
-                            ],
+                            // ],
                             //permet ici de mettre un message quand la photo ne correspond pas au format souhaité
                             'mimeTypesMessage' => 'Veuillez charger une photo valide',
                         ]),
