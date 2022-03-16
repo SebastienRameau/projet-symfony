@@ -86,6 +86,7 @@ class ModifierProfilType extends AbstractType
                         ]),
                     ]
             ])
+            
             ->getForm();
         ;
     }

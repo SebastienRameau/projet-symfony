@@ -114,28 +114,29 @@
                 <div class="col-sm-3">
                     <p>{{ form_widget(formModifierParticipant.photoFilename) }}</p>
                 </div>
+
             </div>
 
 
-        {# </div> 
+        
 
-            <div>
-                {# <a href="{{ participant.photoFilename }}"></a> #}
-                {# <div>
+            {# <div>
+                 <a href="{{ participant.photoFilename }}"></a> 
+                 <div>
                     <button type="submit" class="btn btn-primary text-light">Enregistrer</button>
                     &nbsp &nbsp &nbsp &nbsp
                     <a href= {{path('accueil')}} class="btn btn-secondary text-light">Retour</a>
-                </div> #}
-            </div>
+                </div> 
+            </div> #}
 
-        </div> 
+        
 
             <div>
                 {# le bouton enregistrer qui envoie les données en BDD, et qui doit renvoyer vers la page d'accueil #}
-                <button type="submit" method="POST" class="btn btn-secondary" href={{ path('accueil') }} >Enregistrer</button>
-
+                <button type="submit" method="POST" class="btn btn-primary text-light" href={{ path('accueil') }}>Enregistrer</button>
+                 &nbsp &nbsp &nbsp &nbsp
                 {# le bouton retour, redirection page d'accueil sans modifier les informations du profil #}
-                <a href="{{ path('accueil' )}}" class="btn btn-secondary">Retour</a>
+                <a href="{{ path('accueil')}}" class="btn btn-secondary text-light">Retour</a>
             </div>
 
 
