@@ -5,7 +5,11 @@
 {% block main %}
 
 <div class="col-12 text-center">
+<<<<<<< HEAD
       {{ form_start(formModifierParticipant) }}
+=======
+    
+>>>>>>> 9376e4555dd8836c96ae7c61c722cb1ea1ca01bc
 
     <h2 class="text-center text-primary">Mon profil</h2>
 
@@ -28,6 +32,7 @@
 
             <div class="row justify-content-md-center">
 
+<<<<<<< HEAD
                 <div class="col-sm-2 text-dark">
                     <p>{{ form_label(formModifierParticipant.nom) }} </p>
                 </div>
@@ -35,6 +40,22 @@
                     <p>{{ form_widget(formModifierParticipant.nom) }} </p>
                 </div>
             </div>
+=======
+
+    <h2 class="text-center">Mon profil</h2>
+
+    {# tentative pour afficher la photo chargée #}
+       <img src="{{ asset('photoFilename')}}">
+
+
+       <!-- Formulaire de filtrage -->
+        {{ form_start(formModifierParticipant) }}
+            
+            <h4 class="text-center">{{ form_widget(formModifierParticipant) }}</h4>
+            
+            {# pour hasher le password #}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('formModifierParticipant.password') }}">
+>>>>>>> 9376e4555dd8836c96ae7c61c722cb1ea1ca01bc
 
 
             <div class="row justify-content-md-center">
@@ -117,7 +138,7 @@
             </div>
 
 
-        </div> 
+        {# </div> 
 
             <div>
                 {# <a href="{{ participant.photoFilename }}"></a> #}
@@ -128,7 +149,16 @@
                 </div>
             </div>
 
-        </div>
+        </div> #}
+
+            <div>
+                {# le bouton enregistrer qui envoie les données en BDD, et qui doit renvoyer vers la page d'accueil #}
+                <button type="submit" method="POST" class="btn btn-secondary" href={{ path('accueil') }} >Enregistrer</button>
+
+                {# le bouton retour, redirection page d'accueil sans modifier les informations du profil #}
+                <a href="{{ path('accueil' )}}" class="btn btn-secondary">Retour</a>
+            </div>
+
 
         {{ form_end(formModifierParticipant) }}
 
