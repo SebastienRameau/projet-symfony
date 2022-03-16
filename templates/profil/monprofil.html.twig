@@ -5,6 +5,7 @@
 {% block main %}
 
 <div class="col-12 text-center">
+
       {{ form_start(formModifierParticipant) }}
 
     <h2 class="text-center text-primary">Mon profil</h2>
@@ -26,7 +27,10 @@
             </div>
 
 
+    <div class="container | my-4">
+
             <div class="row justify-content-md-center">
+
 
                 <div class="col-sm-2 text-dark">
                     <p>{{ form_label(formModifierParticipant.nom) }} </p>
@@ -46,7 +50,6 @@
                     <p>{{ form_widget(formModifierParticipant.prenom) }} </p>
                 </div>
             </div>
-
 
 
             <div class="row justify-content-md-center">
@@ -74,6 +77,9 @@
 
             <div class="row justify-content-md-center">
 
+
+            <div class="row justify-content-md-center">
+
                 <div class="col-sm-2 text-dark">
                     <p> {{ form_label(formModifierParticipant.password.first) }}</p>
                 </div>
@@ -88,6 +94,7 @@
             <div class="row justify-content-md-center">
 
                 <div class="col-sm-2 text-dark">
+
                     <p>{{ form_label(formModifierParticipant.password.second ) }}</p>
                 </div>
                 <div class="col-sm-3">
@@ -117,18 +124,7 @@
             </div>
 
 
-        {# </div> 
-
-            <div>
-                {# <a href="{{ participant.photoFilename }}"></a> #}
-                {# <div>
-                    <button type="submit" class="btn btn-primary text-light">Enregistrer</button>
-                    &nbsp &nbsp &nbsp &nbsp
-                    <a href= {{path('accueil')}} class="btn btn-secondary text-light">Retour</a>
-                </div> #}
-            </div>
-
-        </div> 
+           
 
             <div>
                 {# le bouton enregistrer qui envoie les données en BDD, et qui doit renvoyer vers la page d'accueil #}
@@ -140,7 +136,6 @@
 
 
         {{ form_end(formModifierParticipant) }}
-
     </div>
             
 </div>

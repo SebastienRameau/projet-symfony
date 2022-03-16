@@ -99,11 +99,13 @@ class ProfilController extends AbstractController
             }
 
             $entityManagerInterface->flush();
+
             // pour afficher la photo sélectionnée
             //'photo_filename' = $photoFilename;
             $this->addFlash(
                 'notice',
                 'Vous avez modifié votre profil');
+
 
             return $this->redirectToRoute('accueil');
 
