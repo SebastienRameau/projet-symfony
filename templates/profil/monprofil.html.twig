@@ -6,6 +6,7 @@
 
 <div class="col-12 text-center">
 
+
     <h2 class="text-center text-primary">Mon profil</h2>
 
         {# <img src="{{ asset('uploads/' ~ app.user.image) }}"> #}
@@ -15,6 +16,16 @@
        {# {{ form_end(formModifierParticipant) }} #}
 
     <div class="container | my-4">
+
+
+
+    <h2 class="text-center">Mon profil</h2>
+
+    {# tentative pour afficher la photo chargée #}
+       <img src="{{ asset('photoFilename')}}">
+
+
+       <!-- Formulaire de filtrage -->
 
         {{ form_start(formModifierParticipant) }}
 
@@ -132,6 +143,7 @@
             </div>
 
         </div>
+
 
         {{ form_end(formModifierParticipant) }}
 
