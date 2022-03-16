@@ -86,6 +86,8 @@ class ProfilController extends AbstractController
             
             }
             $entityManagerInterface->flush();
+
+            return $this->redirectToRoute('accueil');
             
         }
 

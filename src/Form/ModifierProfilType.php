@@ -23,11 +23,11 @@ class ModifierProfilType extends AbstractType
         $builder
         ->add('pseudo', null,[
             'attr' => [
-                'required' => false
+                'required' => true
             ]])
         ->add('prenom', null,[
             'attr' => [
-                'required' => false
+                'required' => true
             ]])
         ->add('nom', null,[
             'attr' => [
@@ -68,7 +68,7 @@ class ModifierProfilType extends AbstractType
             ->add('photoFilename', FileType::class, [
                     'label' => 'Ma photo :',
                     // 'placeholder' => 'Télécharger vers le serveur',
-                    'required' => false,
+                    'required' => true,
                     'constraints' => [
                         new Image([
                             'maxSize' => '1024k',
