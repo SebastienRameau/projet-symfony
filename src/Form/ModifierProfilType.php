@@ -70,11 +70,9 @@ class ModifierProfilType extends AbstractType
             
             //ajouter une photo (qui doit être enregistrer dans le dossier public/uploads pour les tests)    
             ->add('photoFilename', FileType::class, [
-                    // 'mapped' => false,
+                    'mapped' => false,
                     'label' => 'Ma photo :',
-
                     'required' => false,
-
                     'constraints' => [
                         new Image([
                             'maxSize' => '1024k',
