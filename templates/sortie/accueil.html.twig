@@ -10,7 +10,7 @@
     <strong>{{date_jour}}</strong>
     <br>
     <!-- Affichage du participant connecté -->
-    <h4 class='text-primary'>{{participant_connecte.prenom}} {{participant_connecte.nom}}</h4> 
+    <h4 class='text-primary'><a href="{{ path('app_profil')}}"> {{participant_connecte.prenom}} {{participant_connecte.nom}}</a></h4> 
 </div>
 
 
@@ -19,79 +19,105 @@
 
         <h3>Filtrer les sorties</h3>
 
-        <div class = "col-sm-4 | py-1 my-4">
-            
-                <p>
-                    {{form_label(form.campus)}}
-                </p> 
+        <div class = "col">
+        
+            <div class="row">
 
-                <p>
-                    {{form_label(form.nom)}}
-                </p>
+                <div class="col-sm-4 text-dark">
+                    <p> {{form_label(form.campus)}} </p>
+                </div>
+                <div class="col-sm-3">
+                    <p> {{ form_widget(form.campus)}} </p>
+                </div>
 
-                <p>
-                    {{form_label(form.dateMin)}}
+            </div>
 
-                </p>
 
-                 <p>
-                    {{form_label(form.dateMax)}}
-                </p>
+             <div class="row">
 
-                <p>
-                    {{form_label(form.isOrganisateur)}}
-                </p>
-                
-                <p>
-                    {{form_label(form.isInscrit)}}
-                </p>
-                
-                <p>
-                    {{form_label(form.isNonInscrit)}}
-                </p>
+                <div class="col-sm-4 text-dark">
+                    <p> {{form_label(form.nom)}}</p>
+                </div>
+                <div class="col-sm-3">
+                    <p> {{ form_widget(form.nom)}} </p>
+                </div>
 
-                <p>
-                    {{form_label(form.isPassee)}}
-                </p> 
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-4 text-dark">
+                    <p>  {{form_label(form.dateMin)}} </p>
+                </div>
+                <div class="col-sm-3">
+                    <p>  {{form_widget(form.dateMin)}} </p>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-sm-4 text-dark">
+                    <p> {{form_label(form.dateMax)}} </p>
+                </div>
+                <div class="col-sm-3">
+                    <p> {{form_widget(form.dateMax)}} </p>
+                </div>
+
+            </div>
+
+
+
+            <div class="row">
+
+                <div class="col-sm-4 text-dark">
+                    <p>{{form_label(form.isOrganisateur)}} </p>
+                </div>
+                <div class="col-sm-3">
+                    <p>  {{form_widget(form.isOrganisateur)}}</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-4 text-dark">
+                    <p>{{form_label(form.isInscrit)}} </p>
+                </div>
+                <div class="col-sm-3">
+                    <p> {{form_widget(form.isInscrit)}}</p>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-sm-4 text-dark">
+                    <p>{{form_label(form.isNonInscrit)}}</p>
+                </div>
+                <div class="col-sm-3">
+                    <p> {{form_widget(form.isNonInscrit)}}</p>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-sm-4 text-dark">
+                    <p> {{form_label(form.isPassee)}}</p>
+                </div>
+                <div class="col-sm-3">
+                    <p>  {{form_widget(form.isPassee)}}</p>
+                </div>
+
+            </div>
+
 
         </div>
 
-
-        <div class="col-sm-5 | py-1 my-4">
-
-                <p>
-                {{ form_widget(form.campus)}} 
-                </p>
-
-                <p>
-                {{ form_widget(form.nom)}} 
-                </p>
-
-               <p>
-                    {{form_widget(form.dateMin)}}
-
-                </p>
-
-                 <p>
-                    {{form_widget(form.dateMax)}}
-                </p>
-
-                <p>
-                    {{form_widget(form.isOrganisateur)}}
-                </p>
-                
-                <p>
-                    {{form_widget(form.isInscrit)}}
-                </p>
-                
-                <p>
-                    {{form_widget(form.isNonInscrit)}}
-                </p>
-
-                <p>
-                    {{form_widget(form.isPassee)}}
-                </p> 
-        </div>
 
         <div>
 
