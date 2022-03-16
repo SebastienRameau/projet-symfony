@@ -22,6 +22,7 @@ class ModifierProfilType extends AbstractType
     {
         $builder
 
+
             ->add('pseudo', null,[
                 'attr' => [
                     'required' => false
@@ -71,7 +72,9 @@ class ModifierProfilType extends AbstractType
             ->add('photoFilename', FileType::class, [
                     'mapped' => false,
                     'label' => 'Ma photo :',
+
                     'required' => false,
+
                     'constraints' => [
                         new Image([
                             'maxSize' => '1024k',
