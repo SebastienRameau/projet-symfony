@@ -5,18 +5,15 @@
 {% block main %}
 
 <div class="col-12 text-center">
+      {{ form_start(formModifierParticipant) }}
 
     <h2 class="text-center text-primary">Mon profil</h2>
 
-        {# <img src="{{ asset('uploads/' ~ app.user.image) }}"> #}
-
-            
-
-       {# {{ form_end(formModifierParticipant) }} #}
-
+        <img src="{{ asset('uploads/' ~ app.user.photoFilename) }}" width="130">
+          
     <div class="container | my-4">
 
-        {{ form_start(formModifierParticipant) }}
+       
 
             <div class="row justify-content-md-center">
 
@@ -123,7 +120,7 @@
         </div> 
 
             <div>
-                <a href="{{ participant.photoFilename }}"></a>
+                {# <a href="{{ participant.photoFilename }}"></a> #}
                 <div>
                     <button type="submit" class="btn btn-primary text-light">Enregistrer</button>
                     &nbsp &nbsp &nbsp &nbsp
