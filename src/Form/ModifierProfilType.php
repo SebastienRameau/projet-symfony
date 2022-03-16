@@ -72,9 +72,7 @@ class ModifierProfilType extends AbstractType
             ->add('photoFilename', FileType::class, [
                     'mapped' => false,
                     'label' => 'Ma photo :',
-
                     'required' => false,
-
                     'constraints' => [
                         new Image([
                             'maxSize' => '1024k',
@@ -82,8 +80,8 @@ class ModifierProfilType extends AbstractType
                             // 'mimeTypes' => [
                             //     'img/jpg',
                             //     'img/png',
-
                             // ],
+
                             //permet ici de mettre un message quand la photo ne correspond pas au format souhaité
                             'mimeTypesMessage' => 'Veuillez charger une photo valide',
                         ]),
