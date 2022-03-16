@@ -200,7 +200,7 @@ class SortieController extends AbstractController
 
             $this->addFlash(
                 'notice',
-                'Vous avez deja annule une sortie'
+                'Vous avez annulé une sortie'
             );
 
 
@@ -251,7 +251,7 @@ class SortieController extends AbstractController
 
         $this->addFlash(
             'notice',
-            ' Vous avez deja modifie une sortie'
+            ' Vous avez déjà modifie une sortie'
 
         );
 
@@ -279,7 +279,7 @@ class SortieController extends AbstractController
 
         $this->addFlash(
             'notice',
-            'Vous avez incsrire une sortie'
+            'Vous vous êtes inscrit à une sortie'
         );
 
 
@@ -303,12 +303,35 @@ class SortieController extends AbstractController
 
         $this->addFlash(
             'notice',
-            'Vous avez desiste une sortie'
+            'Vous vous êtes désisté d une sortie'
         );
 
 
 
 
         return $this->redirectToRoute('accueil');
+    }
+
+
+
+    /**
+     * @Route("/remove/{id}", name="remove")
+     */
+    public function remove(Sortie $sortie,EntityManagerInterface $emi): Response
+    {
+       
+        $emi -> remove($sortie);
+
+        $emi -> flush();
+
+        $this->addFlash(
+            'notice',
+            'Vous avez supprimé une sortie'
+        );
+
+
+        return $this->redirectToRoute('accueil'); 
+
+
     }
 }

@@ -77,7 +77,9 @@
                 {{p.Pseudo}}
             </td>
             <td>
+            <a href={{path('profil',{'id' : p.id })}} class="">
                 {{p.prenom}} {{p.nom}}
+            </a>    
             </td>
         </tr>
         {% endfor %}
