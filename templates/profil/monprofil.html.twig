@@ -5,11 +5,11 @@
 {% block main %}
 
 <div class="col-12 text-center">
-
+{{ form_start(formModifierParticipant) }}
 
     <h2 class="text-center text-primary">Mon profil</h2>
 
-        {# <img src="{{ asset('uploads/' ~ app.user.image) }}"> #}
+        <img src="{{ asset('uploads/' ~ app.user.photoFilename) }}">
 
             
 
@@ -18,16 +18,13 @@
     <div class="container | my-4">
 
 
-
-    <h2 class="text-center">Mon profil</h2>
-
     {# tentative pour afficher la photo chargée #}
-       <img src="{{ asset('photoFilename')}}">
+       {# <img src="{{ asset('photoFilename')}}"> #}
 
 
        <!-- Formulaire de filtrage -->
 
-        {{ form_start(formModifierParticipant) }}
+        
 
             <div class="row justify-content-md-center">
 
@@ -93,6 +90,7 @@
                 </div>
                 <div class="col-sm-3">
                     <p> {{form_widget(formModifierParticipant.password.first)}}</p>
+                    <p>{{ form_errors(formModifierParticipant.password.first) }}</p>
                     {# pour hasher le password #}
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('formModifierParticipant.password') }}">
                 </div>
@@ -106,6 +104,7 @@
                 </div>
                 <div class="col-sm-3">
                     <p>{{ form_widget(formModifierParticipant.password.second) }} </p>
+                    <p>{{ form_errors(formModifierParticipant.password.second) }}</p>
                 </div>
             </div>
 
@@ -127,6 +126,7 @@
                 </div>
                 <div class="col-sm-3">
                     <p>{{ form_widget(formModifierParticipant.photoFilename) }}</p>
+                    {{ form_errors(formModifierParticipant.photoFilename) }}
                 </div>
             </div>
 
@@ -134,7 +134,7 @@
         </div> 
 
             <div>
-                <a href="{{ participant.photoFilename }}"></a>
+                {# <a href="{{ participant.photoFilename }}"></a> #}
                 <div>
                     <button type="submit" class="btn btn-primary text-light">Enregistrer</button>
                     &nbsp &nbsp &nbsp &nbsp
