@@ -67,12 +67,8 @@ class SortieController extends AbstractController
             ]);
         }
 
-        //Pour que les données affichées lors du premier chargement de la page correspondent à ce qui est attendu dans la maquette,
-        //on set les attributs nécessaires de $filtreSorties. La cohérence avec la vue sera fait en JS (je suppose).
-        $filtreSorties->setIsOrganisateur(true)->setIsInscrit(true)->setIsNonInscrit(true)
-            //Note : le getCampus seul renvoie un campus sans nom, avec juste un id ;
-            //peut-être parce que participantConnecte a été hydratée en tant que User et pas en tant que Participant ?
-            ->setCampus($repoCampus->findOneBy(['id' => $participantConnecte->getCampus()->getId()]));
+        //Pour qu'au premier chargement de la page, seules les sorties auxquelles le participant connecté est inscrit s'affichent.
+        $filtreSorties->setIsInscrit(true);
         
         $sortiesListe = $repoSortie->findByFilters($filtreSorties, $participantConnecte, $dateJour);
 
