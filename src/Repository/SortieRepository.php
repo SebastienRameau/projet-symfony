@@ -105,7 +105,7 @@ class SortieRepository extends ServiceEntityRepository
 
         //Si la checkbox Organisateur a été cochée, on rajoute les sorties dont le participant connecté est l'organisateur
         if ($isOrganisateur != null) {
-            $qb->orWhere('s.organisateur = :participantConnecte')
+            $qb->andWhere('s.organisateur = :participantConnecte')
                 ->setParameter(':participantConnecte', $participantConnecte);
         }
 
@@ -123,8 +123,8 @@ class SortieRepository extends ServiceEntityRepository
 
         //Si la checkbox Est Passée a été cochée, on ne garde que les sorties qui sont déjà passées
         if ($isPassee != null) {
-            $qb->andWhere('s.dateHeureDebut <= :dateJour')
-                ->setParameter(':dateJour', $dateJour);
+            $qb->andWhere('e.libelle = :etat')
+                ->setParameter(':etat', 'Passée');
         }
 
         //On les affiche par date de la sortie ascendante
