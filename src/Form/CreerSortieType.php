@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,18 +35,34 @@ class CreerSortieType extends AbstractType
 
             ->add('dateHeureDebut', DateTimeType::class, [
                 'required' => false,
-                'widget' => 'single_text',
-                // prevents rendering it as type="date", to avoid HTML5 date pickers
+                
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text',
+               
                 'html5' => true,
+
+                'input'  => 'datetime_immutable',
             ])
 
             ->add('duree')
 
-            ->add('dateLimiteInscription' , DateTimeType::class, [
+            ->add('dateLimiteInscription' , DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
+
                 // prevents rendering it as type="date", to avoid HTML5 date pickers
+
                 'html5' => true,
+
+                'input'  => 'datetime_immutable',
+
+                'attr' =>[
+                    'class' => 'js-datepicker',
+                    'data-provide' => 'datetimepicker',
+                ],
+
+              
+
             ])
 
             ->add('nbInscriptionMax')
