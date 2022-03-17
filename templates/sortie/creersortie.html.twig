@@ -112,9 +112,6 @@
                  <p>
                 {{ form_widget(formular.lieu)}} 
                 </p>
-
-
-
         </div>
 
     </div>
@@ -128,7 +125,11 @@
         <button href= {{path('accueil')}}>Retour</button>
 
     </div>
-
+    {% block javascripts %}
+        {# {{ parent() }} #}
+        {# {{ encore_entry_script_tags('myjs') }} #}
+            <script>afficherLieu();</script>
+    {% endblock javascripts %}
     
 </div>
 
@@ -143,6 +144,7 @@
         });
     });
 </script>
+
 
 {% endblock %}
 

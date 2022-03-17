@@ -62,18 +62,6 @@ class ProfilController extends AbstractController
                 $entityManagerInterface->persist($this->getUser());
             }
 
-            //changer de campus (en cours car la bdd n'enregistre pas le changement)
-            // $campus = $formModifierParticipant->get('campus')->getData();
-            // if ($campus) {
-            //     $this->getUser()->setCampus(
-            //         // $this->getUser(),
-            //         // $formModifierParticipant->get('campus')->getData()
-            //     );
-
-            //     $campus = $formModifierParticipant->getData();
-            //     $entityManagerInterface->persist($this->getUser());
-            // }
-
             /** 
              * @var UploadedFile $photoFilename
              */
@@ -100,8 +88,6 @@ class ProfilController extends AbstractController
 
             $entityManagerInterface->flush();
 
-            // pour afficher la photo sélectionnée
-            //'photo_filename' = $photoFilename;
             $this->addFlash(
                 'notice',
                 'Vous avez modifié votre profil');
